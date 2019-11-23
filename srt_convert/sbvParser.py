@@ -33,10 +33,10 @@ class sbvParser(object):
         if not isinstance(timestamp, str):
             log.debug("Converting timestamp {} to string".format(timestamp))
             timestamp = str(timestamp)
-        print("timestamp coming in", timestamp)
         time, ms = timestamp.split(".")
         hours, mins, secs = [float(i) for i in time.split(":")]
         fulltime = (hours * 3600000) + (mins * 60000) + (secs * 1000) + float(ms)
+        fulltime = fulltime / 1000
         return fulltime
 
     def from_file(self, input_file):
@@ -58,8 +58,10 @@ class sbvParser(object):
         if len(self.parsed_sbv) < 1:
             self.parse_sbv()
         textgrid = []
-        intro_template = "{}     {}      "
-        time_template = "[{}]    {}      [{}]"
+#ur Celsius value is {:0.2f}ºC.\n".format(answer)
+        intro_template = "{}     {}:      "
+        # add formatting for round to 2 decimals
+        time_template = "[{:0.2f}]    {}      [{:0.2f}]"
         for chunk_id, values in self.parsed_sbv.items():
             # NUMBER\s\t\sSPEAKER\s\t\s[start]\s\tTEXT\s\t\s[end]\n 
             intro = intro_template.format(chunk_id, values["speaker_name"])
@@ -73,7 +75,7 @@ class sbvParser(object):
         return "\n".join(textgrid) 
 
     # FIXME: re compile
-    def sbv_textparse(self, speaker_and_text, speaker="", speaker_regex=re.compile("[A-Z]+:")):
+    def sbv_textparse(self, speaker_and_text, speaker="Speaker 1", speaker_regex=re.compile("[A-Z]+:")):
         """
         Args:
             speaker_and_text(str)
@@ -101,7 +103,7 @@ class sbvParser(object):
             sbv_text = self.raw_sbv
         for timestamps, speaker_and_text in self.sbv_generator(sbv_text.splitlines(), separator=""):
             start, end = timestamps.split(time_stamp_sep)
-            previous_entry = self.parsed_sbv.get(chunk_id, {"speaker_name": ""})
+            previous_entry = self.parsed_sbv.get(chunk_id, {"speaker_name": "Speaker 1"})
             speaker, text = self.sbv_textparse(speaker_and_text, speaker=previous_entry["speaker_name"])
             chunk_id += 1
             self.parsed_sbv[chunk_id] = {
