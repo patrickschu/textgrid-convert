@@ -58,7 +58,6 @@ class sbvParser(object):
         if len(self.parsed_sbv) < 1:
             self.parse_sbv()
         textgrid = []
-#ur Celsius value is {:0.2f}ºC.\n".format(answer)
         intro_template = "{}     {}:      "
         # add formatting for round to 2 decimals
         time_template = "[{:0.2f}]    {}      [{:0.2f}]"
