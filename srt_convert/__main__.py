@@ -5,6 +5,7 @@ import sys
 from srt_convert.ArgParser import  arg_parser
 from srt_convert.sbvParser import sbvParser
 from srt_convert.srtParser import srtParser
+from srt_convert.
 
 import logging
 log = logging.getLogger(__name__)
@@ -85,13 +86,13 @@ def main(source_format, to,  input_path, output_path):
             raise ValueError("No relevant sbv or srt files found in folder '{}', contains '{}'".format(input_folder, os.listdir(input_folder)[:100]))
         log.debug("Processing {} {} files from folder '{}'".format(len(infiles), source_format, str(input_path)))
         for fil in infiles:
+            raise ValueError("No relevant sbv or srt files found in folder '{}', contains '{}'".format(input_folder, os.listdir(input_folder)[:100]))
+        log.debug("Processing {} {} files from folder '{}'".format(len(infiles), source_format, str(input_path)))
+        for fil in infiles:
             log.debug("Working on file '{}'".format(fil))
             result = convert_to_txtgrid(fil, source_format) 
-
-
-                
-
 
 current_args = arg_parser.parse_args(sys.argv[1:])
 print(current_args)
 main(**vars(current_args))
+# main

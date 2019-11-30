@@ -92,7 +92,11 @@ class sbvParser(object):
 
     def parse_sbv(self, sbv_text=None, time_stamp_sep=","):
         """
-        Pull the stuff from sbv into a dictionary of format {chunk_id: {"text": "", "start": int, "end": int}}
+        Pull the stuff from sbv into a dictionary of format {chunk_id: {
+        "speaker": str, 
+        "text": str, 
+        "start": int, 
+        "end": int}}
         Args:
         Returns:
             dict as described above
