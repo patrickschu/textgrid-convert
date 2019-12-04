@@ -1,9 +1,9 @@
-# modeled on sbvParser
 # read the sbv stuff in; assign timestamp to text
 # {id : "chunk", "start", "end"
 # expected out: 26 	 Carrie: 	 [78.28] 	 (pause 5.83) 	 [84.10]
 import re
 import logging
+from srt_convert import textgridtools as tgtools 
 log = logging.getLogger(__name__)
 
 class sbvParser(object):
@@ -56,22 +56,14 @@ class sbvParser(object):
 
         """
         if len(self.parsed_sbv) < 1:
+            log.debug("Running parse_sbv")
             self.parse_sbv()
-        textgrid = []
-        intro_template = "{}     {}:      "
-        # add formatting for round to 2 decimals
-        time_template = "[{:0.2f}]    {}      [{:0.2f}]"
-        for chunk_id, values in self.parsed_sbv.items():
-            # NUMBER\s\t\sSPEAKER\s\t\s[start]\s\tTEXT\s\t\s[end]\n 
-            intro = intro_template.format(chunk_id, values["speaker_name"])
-            start_time, end_time = self._to_textgrid_time(values["start"]), self._to_textgrid_time(values["end"]) 
-            time = time_template.format(start_time, values["text"], end_time)
-            textgrid.append(intro + time)
-        assert len(textgrid) == len(self.parsed_sbv), "make sure all items from parsed dictionary end up in list"
-        # FIXME this line sep
-        if output_file:
-            raise NotImplementedError("output_file not implemented")
-        return "\n".join(textgrid) 
+        parsed_sbv_dict = self.parsed_sbv
+        for chunk, values in parsed_sbv_dict.items():
+            start, end = self._to_textgrid_time(values["start"]), self._to_textgrid_time(values["end"])
+            values["start"], values["end"] = start, end
+        textgrid = tgtools.to_long_textgrid(tier_dict=parsed_sbv_dict)
+        return textgrid
 
     # FIXME: re compile
     def sbv_textparse(self, speaker_and_text, speaker="Speaker 1", speaker_regex=re.compile("[A-Z]+:")):
@@ -82,11 +74,9 @@ class sbvParser(object):
         """
         raw_text = speaker_and_text.lstrip(">")
         new_speaker = speaker_regex.search(raw_text.lstrip())
-        print("here is inpur speaker", speaker)
         if new_speaker: 
             speaker = new_speaker.group()
         text = raw_text.strip().lstrip(speaker)
-        print("here is output speaker", speaker)
         return speaker.rstrip(":"), text
 
 
