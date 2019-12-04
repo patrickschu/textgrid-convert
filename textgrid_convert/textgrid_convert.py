@@ -31,7 +31,7 @@ def convert_to_txtgrid(input_file, source_format, speaker_name="Speaker 1"):
     if source_format == "srt":
         parsed = srtParser(sourcetext)
     txtgrid = parsed.to_textgrid(speaker_name=speaker_name)
-    log.debug("Created TextGrid for file '{}'".format(input_file, len(sourcetext)))
+    log.debug("Created TextGrid for file '{}', len {}".format(input_file, len(sourcetext)))
     return txtgrid
 
 def folder_source_format(input_folder, file_types=[".srt", ".sbv"]):
@@ -55,7 +55,7 @@ def folder_source_format(input_folder, file_types=[".srt", ".sbv"]):
     assert types[0] in file_types
     return types[0].lstrip(".")
 
-def main(source_format, to,  input_path, output_path=HERE, suffix="_TEXTGRID.txt"):
+def main(source_format, to,  input_path, output_path=HERE, suffix="_TEXTGRID.txt", strict=True):
     """
     Convert files(s) from `input_path` from  `to` format to TextGrid. Optionally, write to `output_path`
     Example: convert from=sbv to=TextGrid and write to output_path="home/patrick/output"
