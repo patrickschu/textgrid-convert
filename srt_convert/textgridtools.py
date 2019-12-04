@@ -132,7 +132,7 @@ def collect_chunk_values(input_dict, key, strict=True):
 
 
 
-def to_long_textgrid(tier_dict, tier_key="speaker", tier_class="IntervalTier"):
+def to_long_textgrid(tier_dict, tier_key="speaker_name", tier_class="IntervalTier"):
     """
     Create long form TextGrid, 
     cf specs here:http://www.fon.hum.uva.nl/praat/manual/TextGrid_file_formats.html
