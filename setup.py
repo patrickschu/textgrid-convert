@@ -10,7 +10,7 @@ from shutil import rmtree
 from setuptools import find_packages, setup, Command
 
 # Package meta-data.
-NAME = "srt_convert"
+NAME = "textgrid_convert"
 DESCRIPTION = "Convert SRT files to other formats"
 URL = 'https://github.com/me/myproject'
 EMAIL = 'me@example.com'
