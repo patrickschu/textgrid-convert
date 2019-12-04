@@ -105,6 +105,4 @@ def main(source_format, to,  input_path, output_path=HERE, suffix="_TEXTGRID.txt
 
 
 current_args = arg_parser.parse_args(sys.argv[1:])
-print(current_args)
 main(**vars(current_args))
-# main
