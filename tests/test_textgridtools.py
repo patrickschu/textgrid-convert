@@ -6,8 +6,8 @@ import pytest
 
 HERE = pathlib.Path(__file__).parent
 LONG_GRID = HERE / "resources" / "test_long.TextGrid"
-
-
+LONG_GRID_OUT = HERE / "long_grid_testout.TextGrid"
+DARLA_OUT = HERE / "long_grid_testout_darla.TextGrid"
 
 TESTDICT = {0: {"speaker_name": "Mary", "text": "one", "start": 0, "end": 0.5896534423132239},
             1: {"speaker_name": "Mary", "text": "",  "end": 1.4123177579131596,"start": 0.5896534423132239},
@@ -34,7 +34,7 @@ def test_to_long_textgrid():
     assert isinstance(res, str)
     res = to_long_textgrid(TESTDICT)
     print(res)
-    with open(LONG_GRID, "r", encoding="utf-8") as gridin:
+    with open(str(LONG_GRID), "r", encoding="utf-8") as gridin:
         truegrid = gridin.read()
     no_nonchars = re.sub(r"\W+", "", truegrid)
     # check content consistency
@@ -44,7 +44,7 @@ def test_to_long_textgrid():
     no_tab_res = re.sub(r"\t", "    ", truegrid)
     no_tab = re.sub(r"\t", "    ", truegrid)
     assert no_tab == no_tab_res
-    with open(HERE / "long_grid_testout.TextGrid", "w", encoding="utf-8") as gridout:
+    with open(str(LONG_GRID_OUT), "w", encoding="utf-8") as gridout:
         gridout.write(res)
 
 
@@ -57,7 +57,7 @@ def test_to_long_darla_textgrid():
         darladict[key]["speaker_name"] = "sentence"
     res = to_long_textgrid(darladict)
     assert isinstance(res, str)
-    with open(HERE / "long_grid_testout_darla.TextGrid", "w", encoding="utf-8") as gridout:
+    with open(str(DARLA_OUT), "w", encoding="utf-8") as gridout:
         gridout.write(res)
 
 if __name__ == "__main__":
