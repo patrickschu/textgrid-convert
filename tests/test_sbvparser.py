@@ -8,6 +8,7 @@ LARS_PATH = HERE / "resources" / "lars_captions.sbv"
 LARS_OUTPATH = HERE / "lars_captions_textgrid.txt" 
 SBV_OUT_PATH = HERE / "txtgrid_sbv.txt"
 SBV_OUT_PATH2 = HERE / "captions_sbv.txt"
+
 def test_lars_sbv():
     """
     """
@@ -69,7 +70,7 @@ def test_textgrid_output():
 def test_captions_textgrid_output():
     """
     """
-    with open(SBV_PATH, "r", encoding="utf-8") as sbvin:
+    with open(str(SBV_PATH), "r", encoding="utf-8") as sbvin:
         txt = sbvin.read()
     parser = sbvParser(txt)
     txtgrid = parser.to_textgrid()

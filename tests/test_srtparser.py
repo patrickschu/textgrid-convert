@@ -3,7 +3,7 @@ from textgrid_convert.srtParser import srtParser
 
 HERE = pathlib.Path(__file__).parent
 SRT_PATH = HERE / "resources" / "downsub.srt"
-
+TXT_OUT = HERE / "txtgrid.txt"
 def test_class_init():
     """
     """
@@ -50,7 +50,7 @@ def test_textgrid_output():
         txt = srtin.read()
     parser = srtParser(txt)
     txtgrid = parser.to_textgrid()
-    with open(HERE / "txtgrid.txt", "w", encoding="utf-8") as txtgridout:
+    with open(str(TXT_OUT), "w", encoding="utf-8") as txtgridout:
          txtgridout.write(txtgrid)
 
 
