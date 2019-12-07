@@ -5,16 +5,17 @@ HERE = pathlib.Path(__file__).parent
 SRT_PATH = HERE / "resources" / "downsub.sbv"
 SBV_PATH = HERE / "resources" / "captions.sbv"
 LARS_PATH = HERE / "resources" / "lars_captions.sbv"
-
-
+LARS_OUTPATH = HERE / "lars_captions_textgrid.txt" 
+SBV_OUT_PATH = HERE / "txtgrid_sbv.txt"
+SBV_OUT_PATH2 = HERE / "captions_sbv.txt"
 def test_lars_sbv():
     """
     """
-    with open(LARS_PATH, "r", encoding="utf-8") as sbvin:
+    with open(str(LARS_PATH), "r", encoding="utf-8") as sbvin:
         sbv = sbvin.read()
     parser = sbvParser(sbv)
     txtgrid = parser.to_textgrid()
-    with open(HERE / "lars_captions_textgrid.txt", "w", encoding="utf-8") as sbvout:
+    with open(str(LARS_OUTPATH), "w", encoding="utf-8") as sbvout:
         sbvout.write(txtgrid)
 
 def test_class_init():
@@ -36,7 +37,6 @@ def test_timeconvert():
     parser = sbvParser(intext)
     converted = parser._to_textgrid_time(intext)
     assert converted == 1579.00 / 1000
-    print(converted)
     intext = "0:01:01.579"
     parser = sbvParser(intext)
     converted = parser._to_textgrid_time(intext)
@@ -50,7 +50,7 @@ def test_timeconvert():
 def test_sbv_parse():
     """
     """
-    with open(SRT_PATH, "r", encoding="utf-8") as sbvin:
+    with open(str(SRT_PATH),  "r", encoding="utf-8") as sbvin:
         txt = sbvin.read()
     parser = sbvParser(txt)
     assert len(parser.raw_sbv) == 267
@@ -59,11 +59,11 @@ def test_sbv_parse():
 def test_textgrid_output():
     """
     """
-    with open(SRT_PATH, "r", encoding="utf-8") as sbvin:
+    with open(str(SRT_PATH), "r", encoding="utf-8") as sbvin:
         txt = sbvin.read()
     parser = sbvParser(txt)
     txtgrid = parser.to_textgrid()
-    with open(HERE / "txtgrid_sbv.txt", "w", encoding="utf-8") as sbvout:
+    with open(str(SBV_OUT_PATH), "w", encoding="utf-8") as sbvout:
         sbvout.write(txtgrid)
 
 def test_captions_textgrid_output():
@@ -73,7 +73,7 @@ def test_captions_textgrid_output():
         txt = sbvin.read()
     parser = sbvParser(txt)
     txtgrid = parser.to_textgrid()
-    with open(HERE / "captions_sbv.txt", "w", encoding="utf-8") as sbvout:
+    with open(str(SBV_OUT_PATH2), "w", encoding="utf-8") as sbvout:
         sbvout.write(txtgrid)
 
 if __name__ == "__main__":
