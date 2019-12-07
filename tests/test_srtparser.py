@@ -46,7 +46,7 @@ def test_srt_parse():
 def test_textgrid_output():
     """
     """
-    with open(str(SRT_PATH, "r", encoding="utf-8") as srtin:
+    with open(str(SRT_PATH), "r", encoding="utf-8") as srtin:
         txt = srtin.read()
     parser = srtParser(txt)
     txtgrid = parser.to_textgrid()
