@@ -4,6 +4,7 @@
 import re
 import logging
 from textgrid_convert import textgridtools as tgtools 
+from textgrid_convert import preproctools as pptools
 log = logging.getLogger(__name__)
 
 class sbvParser(object):
@@ -22,6 +23,7 @@ class sbvParser(object):
         """
         self.raw_sbv=sbv_text
         self.parsed_sbv={}# containing sbv content
+
 
     def _to_textgrid_time(self, timestamp):
         """
@@ -45,12 +47,16 @@ class sbvParser(object):
         """
         return
 
-    def to_textgrid(self, output_file=None, speaker_name="Speaker1"):
+    def to_textgrid(self, output_file=None, speaker_name="Speaker1",
+                    adapt_endstamps=0.001):
         """
         FIXME: add output_file
         Convert to Praat Textgrid format
         "Specs" here: http://www.fon.hum.uva.nl/praat/manual/Intro_7__Annotation.html
         Time needs to be secs.milisecs, round to 2
+        Args:
+            speaker_name (str)
+            adapt_endstamps(float): if given, will adapt end stamps to < start stamp
         Returns:
             TextGrid compatible string
 
@@ -59,9 +65,14 @@ class sbvParser(object):
             log.debug("Running parse_sbv")
             self.parse_sbv()
         parsed_sbv_dict = self.parsed_sbv
+        # create correct time stamps
         for chunk, values in parsed_sbv_dict.items():
             start, end = self._to_textgrid_time(values["start"]), self._to_textgrid_time(values["end"])
             values["start"], values["end"] = start, end
+        # fix timestamp overlaps
+        if adapt_endstamps:
+            log.debug("Adapting end stamps with gap %f" %adapt_endstamps)
+            parsed_sbv_dict = pptools.adapt_timestamps(parsed_sbv_dict, gap=adapt_endstamps)
         textgrid = tgtools.to_long_textgrid(tier_dict=parsed_sbv_dict)
         return textgrid
 
