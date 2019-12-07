@@ -87,7 +87,8 @@ class sbvParser(object):
         new_speaker = speaker_regex.search(raw_text.lstrip())
         if new_speaker: 
             speaker = new_speaker.group()
-        text = raw_text.strip().lstrip(speaker)
+        text = re.sub("^" + speaker, "", raw_text)
+        text = text.strip()
         return speaker.rstrip(":"), text
 
 
