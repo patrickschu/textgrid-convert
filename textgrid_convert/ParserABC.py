@@ -4,6 +4,9 @@ import copy
 import uuid
 from textgrid_convert import textgridtools as tgtools
 from textgrid_convert import preproctools as pptools
+import logging
+
+log = logging.getLogger(__name__)
 
 TESTDICT = {0: {"speaker_name": "Mary", "text": "one", "start": 0, "end": 0.5896534423132239},
             1: {"speaker_name": "Mary", "text": "",  "end": 1.4123177579131596,"start": 0.5896534423132239},
