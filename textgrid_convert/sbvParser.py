@@ -25,21 +25,6 @@ class sbvParser(object):
         self.parsed_sbv={}# containing sbv content
 
 
-    def _to_textgrid_time(self, timestamp):
-        """
-        Output needs to be in mili seconds, round to 2
-        Args:
-        00:52:58,579            timestamp (str)
-        Returns 
-        """
-        if not isinstance(timestamp, str):
-            log.debug("Converting timestamp {} to string".format(timestamp))
-            timestamp = str(timestamp)
-        time, ms = timestamp.split(".")
-        hours, mins, secs = [float(i) for i in time.split(":")]
-        fulltime = (hours * 3600000) + (mins * 60000) + (secs * 1000) + float(ms)
-        fulltime = fulltime / 1000
-        return fulltime
 
     def from_file(self, input_file):
         """
