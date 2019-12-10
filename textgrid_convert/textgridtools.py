@@ -101,6 +101,18 @@ Object class = "TextGrid"
 0
 """
 
+def ms_to_textgrid(milliseconds, strict=True):
+    """
+    Convert milliseconds to textgrid appropriate format 12.88
+    Args:
+        milliseconds (int)
+        strict(Bool): if True, will error out if no int given
+    """
+    if not isinstance(milliseconds, int):
+        raise ValueError("Value {} for milliseconds is not an integer".format(milliseconds))
+    return milliseconds / 1000
+
+
 def to_textgrid_time(timestamp, split_char="."):
     """
     Output needs to be in mili seconds, round to 2
