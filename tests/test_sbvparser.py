@@ -24,27 +24,32 @@ def test_class_init():
     """
     intext = "dummy text"
     parser = sbvParser(intext)
-    assert parser.raw_sbv == intext
+    assert parser.transcription == intext
 
 
 def test_timeconvert():
     """
     """
+    from textgrid_convert import textgridtools as tgt
     intext = "0:00:00.579"
     parser = sbvParser(intext)
-    converted = parser._to_textgrid_time(intext)
+    converted = parser.parse_timestamp(intext)
+    converted = tgt.ms_to_textgrid(converted)
     assert converted == 579.00 / 1000
     intext = "0:00:01.579"
     parser = sbvParser(intext)
-    converted = parser._to_textgrid_time(intext)
+    converted = parser.parse_timestamp(intext)
+    converted = tgt.ms_to_textgrid(converted)
     assert converted == 1579.00 / 1000
     intext = "0:01:01.579"
     parser = sbvParser(intext)
-    converted = parser._to_textgrid_time(intext)
+    converted = parser.parse_timestamp(intext)
+    converted = tgt.ms_to_textgrid(converted)
     assert converted == 61579.00 / 1000
     intext = "1:01:01.579"
     parser = sbvParser(intext)
-    converted = parser._to_textgrid_time(intext)
+    converted = parser.parse_timestamp(intext)
+    converted = tgt.ms_to_textgrid(converted)
     assert converted == 3661579.00 / 1000
 
 
@@ -54,7 +59,7 @@ def test_sbv_parse():
     with open(str(SRT_PATH),  "r", encoding="utf-8") as sbvin:
         txt = sbvin.read()
     parser = sbvParser(txt)
-    assert len(parser.raw_sbv) == 267
+    assert len(parser.transcription) == 267
     # FIXME: does not actually text parsing
 
 def test_textgrid_output():
