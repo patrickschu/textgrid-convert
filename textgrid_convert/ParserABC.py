@@ -31,11 +31,12 @@ Optionally this can be written out using to_file()
 """
 
 
-
-class ParserABC(abc.ABC):
+class ParserABC(metaclass=abc.ABCMeta):
     """
     Abstract base class for Parsers to feed textgrid conversion
     """
+    transcription_dict = {}
+
     def __init__(self, transcription, unique_id=None):
         """
         Initialize Parser with raw transcription string and unique_id
@@ -43,12 +44,23 @@ class ParserABC(abc.ABC):
         self.unique_id = uuid.uuid4() if unique_id is None else unique_id
         self.transcription = transcription
         # transcription dict is formatted like so: {chunk_id(int): {"speaker_name": "", "text": "", "start": float, "end": float}}
-        self.transcription_dict = {}
-    
+
+    @abc.abstractmethod
+    def parse_timestamp(self, timestamp):
+        """
+        Convert timestamp to datetime.tme
+        Args:
+            timestamp(str)
+        Returns:
+            timestamp in milliseconds
+        """
+
     @abc.abstractmethod
     def parse_transcription(self, transcription):
         """
         Convert transcription input to transcription dictionary
+        Args:
+            transcription(str)
         """
 
     def to_textgrid(self, transcription_dict=None, output_file=None, speaker_name="Speaker1", adapt_endstamps=0.001):
@@ -74,9 +86,9 @@ class ParserABC(abc.ABC):
         # create correct time stamps
         for chunk, values in transcription_dict.items():
             # FIXME: maybe this needs to be a parser implemented method
-            start, end = tgtools.to_textgrid_time(values["start"]), tgtools.to_textgrid_time(values["end"])
+            start, end = self.parse_timestamp(values["start"]), self.parse_timestamp(values["end"])
             textgrid_dict[chunk] = values
-            textgrid_dict[chunk]["start"], textgrid_dict[chunk]["end"] = start, end
+            textgrid_dict[chunk]["start"], textgrid_dict[chunk]["end"] = tgtools.ms_to_textgrid(start),  tgtools.ms_to_textgrid(end)
         # fix timestamp overlaps
         if adapt_endstamps:
             log.debug("Adapting end stamps with gap %f" %adapt_endstamps)
@@ -88,11 +100,11 @@ class ParserABC(abc.ABC):
     def from_file(self):
         """
         """
-        pass
+        raise NotImplementedError("")
 
     def to_file(self):
         """
         """
-        pass
+        raise NotImplementedError("")
 
 
