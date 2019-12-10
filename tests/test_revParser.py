@@ -9,6 +9,7 @@ from textgrid_convert.revParser import revParser
 HERE = pathlib.Path(__file__).parent
 RESOURCES = HERE / "resources"
 JSON_IN = RESOURCES / "rev_sample.json"
+JSON_OUT = RESOURCES / "rev_sample_textgrid.txt"
 
 
 def test_init():
@@ -43,7 +44,9 @@ def test_to_txtgrid():
     rr = revParser(text)
     rr.parse_transcription()
     res = rr.to_textgrid()
-    print(res)
+    assert isinstance(res, str)
+    with open(str(JSON_OUT), "w", encoding="utf-8") as txtgridout:
+        txtgridout.write(res)
 
 
 

@@ -7,10 +7,30 @@ import logging
 log = logging.getLogger(__name__)
 
 
+def parse_revstamp(timestamp):
+    """
+    Convert timestamp from rev format (00:00:20,000) to ms
+    """
+    hrs, mins, rest = timestamp.split(":")
+    hrs, mins = float(hrs), float(mins) 
+    secs, ms = [float(i) for i in rest.split(",")]
+    fulltime = (hrs * 3600000) + (mins * 60000) + (secs * 1000) + ms
+    assert isinstance(fulltime, float)
+    fulltime = int(fulltime)
+    return fulltime
+
+
+
 class revParser(ParserABC):
     """
         # transcription dict is formatted like so: {chunk_id(int): {"speaker_name": "", "text": "", "start": float, "end": float}}
     """
+
+    def parse_timestamp(self, timestamp):
+        """
+        Convert from rev timestamps to ms
+        """
+        return parse_revstamp(timestamp)
 
     def parse_transcription(self):
         """
