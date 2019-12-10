@@ -3,11 +3,12 @@
 # expected out: 26 	 Carrie: 	 [78.28] 	 (pause 5.83) 	 [84.10]
 import re
 import logging
+from textgrid_convert.ParserABC import ParserABC
 from textgrid_convert import textgridtools as tgtools 
 from textgrid_convert import preproctools as pptools
 log = logging.getLogger(__name__)
 
-class sbvParser(object):
+class sbvParser(ParserABC):
     """
     Read and parse an sbv formatted file
     Inofficial specs here: GGL 
@@ -15,66 +16,27 @@ class sbvParser(object):
         file_name(optional)
         sbv_text(str)
     """
-    def __init__(self, sbv_text):
+    def __init__(self, transcription):
         """
         Initializer
         Args:
             str_text(str)
         """
-        self.raw_sbv=sbv_text
+        self.transcription = transcription
         self.parsed_sbv={}# containing sbv content
 
-
-    def _to_textgrid_time(self, timestamp):
+    def parse_timestamp(self, timestamp):
         """
-        Output needs to be in mili seconds, round to 2
-        Args:
-        00:52:58,579            timestamp (str)
-        Returns 
+        Convert timestamps from sbv format 0:00:00.599 to ms
         """
-        if not isinstance(timestamp, str):
-            log.debug("Converting timestamp {} to string".format(timestamp))
-            timestamp = str(timestamp)
-        time, ms = timestamp.split(".")
-        hours, mins, secs = [float(i) for i in time.split(":")]
-        fulltime = (hours * 3600000) + (mins * 60000) + (secs * 1000) + float(ms)
-        fulltime = fulltime / 1000
+        hrs, mins, rest = timestamp.split(":")
+        hrs, mins = int(hrs), int(mins)
+        secs, ms = [int(i) for i in rest.split(".")]
+        fulltime = (hrs * 3600000) + (mins * 60000) + (secs * 1000) + ms
+        assert isinstance(fulltime, int)
         return fulltime
 
-    def from_file(self, input_file):
-        """
-        Read from `input_file` and parse into sbvParser
-        """
-        return
 
-    def to_textgrid(self, output_file=None, speaker_name="Speaker1",
-                    adapt_endstamps=0.001):
-        """
-        FIXME: add output_file
-        Convert to Praat Textgrid format
-        "Specs" here: http://www.fon.hum.uva.nl/praat/manual/Intro_7__Annotation.html
-        Time needs to be secs.milisecs, round to 2
-        Args:
-            speaker_name (str)
-            adapt_endstamps(float): if given, will adapt end stamps to < start stamp
-        Returns:
-            TextGrid compatible string
-
-        """
-        if len(self.parsed_sbv) < 1:
-            log.debug("Running parse_sbv")
-            self.parse_sbv()
-        parsed_sbv_dict = self.parsed_sbv
-        # create correct time stamps
-        for chunk, values in parsed_sbv_dict.items():
-            start, end = self._to_textgrid_time(values["start"]), self._to_textgrid_time(values["end"])
-            values["start"], values["end"] = start, end
-        # fix timestamp overlaps
-        if adapt_endstamps:
-            log.debug("Adapting end stamps with gap %f" %adapt_endstamps)
-            parsed_sbv_dict = pptools.adapt_timestamps(parsed_sbv_dict, gap=adapt_endstamps)
-        textgrid = tgtools.to_long_textgrid(tier_dict=parsed_sbv_dict)
-        return textgrid
 
     # FIXME: re compile
     def sbv_textparse(self, speaker_and_text, speaker="Speaker 1", speaker_regex=re.compile("[A-Z]+:")):
@@ -92,7 +54,7 @@ class sbvParser(object):
         return speaker.rstrip(":"), text
 
 
-    def parse_sbv(self, sbv_text=None, time_stamp_sep=","):
+    def parse_transcription(self, sbv_text=None, time_stamp_sep=","):
         """
         Pull the stuff from sbv into a dictionary of format {chunk_id: {
         "speaker": str, 
@@ -125,6 +87,7 @@ class sbvParser(object):
             separator(str): separator between records
         Returns:
             generator over chunk_id, timestamp, text
+            FIXME: deque here
         """
         count = 0
         output = ()

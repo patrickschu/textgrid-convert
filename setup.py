@@ -1,7 +1,6 @@
 # setup for srt-convert
 #te: To use the 'upload' functionality of this file, you must:
 #   $ pipenv install twine --dev
-
 import io
 import os
 import sys
@@ -10,7 +9,7 @@ from shutil import rmtree
 from setuptools import find_packages, setup, Command
 
 # Package meta-data.
-NAME = "textgrid_convert"
+NAME = "textgrid-convert"
 DESCRIPTION = "Convert SRT files to other formats"
 URL = 'https://github.com/me/myproject'
 EMAIL = 'me@example.com'
