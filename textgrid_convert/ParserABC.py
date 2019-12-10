@@ -75,7 +75,6 @@ class ParserABC(metaclass=abc.ABCMeta):
         Returns:
             TextGrid compatible string
         """
-        print("RUN to tttt")
         if not transcription_dict:
             if self.transcription_dict:
                 transcription_dict = self.transcription_dict
@@ -99,11 +98,13 @@ class ParserABC(metaclass=abc.ABCMeta):
 
     def from_file(self):
         """
+        Read file from disk
         """
         raise NotImplementedError("")
 
     def to_file(self):
         """
+        Write file to disk
         """
         raise NotImplementedError("")
 
