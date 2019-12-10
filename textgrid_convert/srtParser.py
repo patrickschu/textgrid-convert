@@ -3,8 +3,9 @@
 # expected out: 26 	 Carrie: 	 [78.28] 	 (pause 5.83) 	 [84.10]
 import logging
 import copy
-log = logging.getLogger(__name__)
 from textgrid_convert.ParserABC import ParserABC
+
+log = logging.getLogger(__name__)
 
 class srtParser(ParserABC):
     """
@@ -50,8 +51,8 @@ class srtParser(ParserABC):
             start, end = timestamps.split(time_stamp_sep)
             self.transcription_dict[chunk_id] = {
                     "speaker_name": speaker_name,
-                    "start": start,  
-                    "end": end,  
+                    "start": start,
+                    "end": end,
                     "text": text}
         return copy.deepcopy(self.transcription_dict)
 
