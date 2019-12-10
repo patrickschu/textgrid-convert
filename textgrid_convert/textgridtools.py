@@ -203,6 +203,4 @@ def to_long_textgrid(tier_dict, tier_key="speaker_name", tier_class="IntervalTie
     return "\n".join([file_str, "\n".join(tiers)]) 
 
 
-if __name__ == "__main__":
-    to_long_textgrid(testdict)
 
