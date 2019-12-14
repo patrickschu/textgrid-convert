@@ -38,7 +38,6 @@ class revParser(ParserABC):
         """
         Convert from rev timestamps to ms
         """
-        print("returning", parse_revstamp(timestamp))
         return parse_revstamp(timestamp)
 
     def parse_transcription(self):
@@ -51,6 +50,7 @@ class revParser(ParserABC):
         except json.decoder.JSONDecodeError as err:
             log.critical("Input transcription to revParser '%s' cannot be parsed as JSON" %self.unique_id) 
             raise err
+        #FIXME make this a separate parsing step
         self.speakers = [(i["id"], i["name"]) for i in input_dict["speakers"]]
         monologues = input_dict["monologues"]
         chunk_id = 1
@@ -68,31 +68,33 @@ class revParser(ParserABC):
         self.transcription_dict = copy.deepcopy(transcription_dict)
         return copy.deepcopy(transcription_dict)
 
-    def to_darla_textgrid(self, speaker_id=None):
+    def to_darla_textgrid(self, speaker_id=None, alias="sentence"):
         """
         Change TextGrid to the format DARLA understands: only "sentence" grids
         Args:
-            speaker_id (int):  ID of the speaker to keep
+            speaker_id (int):  ID of the speaker to keep, will default to first found
         Returns:
             str to be fed into DARLA
         """
+        if not self.transcription_dict:
+            self.parse_transcription()
+        output_dict = {}
         if speaker_id is not None:
             if speaker_id not in [speaker_id for speaker_id, speaker_name in self.speakers]:
-                raise ValueError("Speaker name '{}' not found in set of speakers {}".format(speaker_id, speakers))
-            _ , speaker_name = [(i, n) for i, n in self.speakers if i == speaker_id]
+                raise ValueError("Speaker name '{}' not found in set of speakers {}".format(speaker_id, self.speakers))
+            print(self.speakers)
+            _ , speaker_name = [(i, n) for i, n in self.speakers if i == speaker_id][0]
         else:
             speaker_id, speaker_name = self.speakers[0]
         log.debug("Speaker name set to '%s'" %speaker_name)
         print("Speaker name set to '%s'" %speaker_name)
-        if not self.transcription_dict:
-            self.parse_transcription()
         darla_dict = copy.deepcopy(self.transcription_dict)
-        print(darla_dict, "darla")
         darla_dict = {k:v for k,v in darla_dict.items() if v["speaker_name"] == speaker_name}
-        print("Transcription dict going into DARLA has {} items".format(len(darla_dict)))
         log.debug("Transcription dict going into DARLA has {} items".format(len(darla_dict)))
-        textgrid = self.to_textgrid(darla_dict)
+        log.debug("Setting tier name to '%s'" %alias)
+        for key, values in darla_dict.items():
+            output_dict[key] = values
+            output_dict[key].update({"speaker_name": alias}) 
+        textgrid = self.to_textgrid(output_dict)
         return textgrid
-
-
 
