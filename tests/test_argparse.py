@@ -1,5 +1,6 @@
 # test flag parsing and such
 import pytest
+import pathlib
 from textgrid_convert import ArgParser
 
 """
@@ -34,43 +35,49 @@ def test_input_path():
 def test_output_path():
     """
     """
+    inflag = "--input_path"
     testpath = "DUMMYPATH"
     flag = "--output_path"
     var = flag.lstrip("--") 
     arg = ArgParser.arg_parser
-    res = arg.parse_args([flag, testpath])
-    assert vars(res)[var] == testpath
+    res = arg.parse_args([flag, testpath, inflag, testpath])
+    assert vars(res)[var] == pathlib.PurePath(testpath)
     # abbreviated
+    inflag = "--input_path"
+    testpath = "DUMMYPATH"
     flag = "--out"
     arg = ArgParser.arg_parser
-    res = arg.parse_args([flag, testpath])
-    assert vars(res)[var] == testpath
+    res = arg.parse_args([flag, testpath, inflag, testpath])
+    assert vars(res)[var] == pathlib.PurePath(testpath)
     # abbreviated
     flag = "-o"
     arg = ArgParser.arg_parser
-    res = arg.parse_args([flag, testpath])
-    assert vars(res)[var] == testpath
+    res = arg.parse_args([flag, testpath, inflag, testpath])
+    assert vars(res)[var] == pathlib.PurePath(testpath)
     with pytest.raises(TypeError):
         res = arg.parse_args([flag, 100])
 
 def test_from():
     """
     """
+    inflag = "--input_path"
+    testpath = "DUMMYPATH"
     testformat = "sbv"
     flag = "--source_format"
     var = flag.lstrip("--") 
     arg = ArgParser.arg_parser
-    res = arg.parse_args([flag, testformat])
+    res = arg.parse_args([flag, testformat, inflag, testpath])
     assert vars(res)[var] == testformat
     # abbreviated
+    inflag = "--input_path"
     flag = "--from"
     arg = ArgParser.arg_parser
-    res = arg.parse_args([flag, testformat])
+    res = arg.parse_args([flag, testformat, inflag, testpath])
     assert vars(res)[var] == testformat
     # abbreviated
     flag = "-f"
     arg = ArgParser.arg_parser
-    res = arg.parse_args([flag, testformat])
+    res = arg.parse_args([flag, testformat, inflag, testpath])
     assert vars(res)[var] == testformat
     with pytest.raises(TypeError):
         res = arg.parse_args([flag, 100])

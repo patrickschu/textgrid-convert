@@ -10,11 +10,11 @@ def test_filewrite():
     """
     """
     outfile = RESOURCES / "writeout.txt"
-    os.remove(outfile)
-    filewriter(outfile, "outstring")
+    os.remove(str(outfile))
+    filewriter(str(outfile), "outstring")
     with pytest.raises(IOError):
-        filewriter(outfile, "outstring", strict=True)
-    filewriter(outfile, "outstring", strict=False)
+        filewriter(str(outfile), "outstring", strict=True)
+    filewriter(str(outfile), "outstring", strict=False)
 
 
 
