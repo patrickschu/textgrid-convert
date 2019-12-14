@@ -66,7 +66,7 @@ class ParserABC(metaclass=abc.ABCMeta):
     def to_textgrid(self, transcription_dict=None, output_file=None, speaker_name="Speaker1", adapt_endstamps=0.001):
         """
         FIXME: add output_file
-        Convert to Praat Textgrid format
+        Convert internal dict to Praat Textgrid format
         "Specs" here: http://www.fon.hum.uva.nl/praat/manual/Intro_7__Annotation.html
         Time needs to be secs.milisecs, round to 2
         Args:
@@ -85,7 +85,7 @@ class ParserABC(metaclass=abc.ABCMeta):
         # create correct time stamps
         for chunk, values in transcription_dict.items():
             # FIXME: maybe this needs to be a parser implemented method
-            start, end = self.parse_timestamp(values["start"]), self.parse_timestamp(values["end"])
+            start, end = values["start"], values["end"]
             textgrid_dict[chunk] = values
             textgrid_dict[chunk]["start"], textgrid_dict[chunk]["end"] = tgtools.ms_to_textgrid(start),  tgtools.ms_to_textgrid(end)
         # fix timestamp overlaps
