@@ -40,7 +40,7 @@ class revParser(ParserABC):
         """
         return parse_revstamp(timestamp)
 
-    def parse_transcription(self):
+    def parse_transcription(self, speaker=None):
         """
         Specs are here: https://www.rev.com/api/attachmentsgetcontent
         """
