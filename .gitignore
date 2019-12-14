@@ -1,3 +1,4 @@
+*.swp
 *.py~
 *.pyc
 textgrid_convert/lib/*
