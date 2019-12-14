@@ -75,8 +75,8 @@ class sbvParser(ParserABC):
             chunk_id += 1
             self.parsed_sbv[chunk_id] = {
                     "speaker_name": speaker,
-                    "start": start,  
-                    "end": end,  
+                    "start": self.parse_timestamp(start),  
+                    "end": self.parse_timestamp(end),  
                     "text": text}
         return self.parsed_sbv.copy()
 

@@ -109,7 +109,7 @@ def ms_to_textgrid(milliseconds, strict=True):
         strict(Bool): if True, will error out if no int given
     """
     if not isinstance(milliseconds, int):
-        raise ValueError("Value {} for milliseconds is not an integer".format(milliseconds))
+        raise ValueError("Value {} for milliseconds is not an integer, is {}".format(milliseconds, type(milliseconds)))
     return milliseconds / 1000
 
 

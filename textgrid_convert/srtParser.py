@@ -51,8 +51,8 @@ class srtParser(ParserABC):
             start, end = timestamps.split(time_stamp_sep)
             self.transcription_dict[chunk_id] = {
                     "speaker_name": speaker_name,
-                    "start": start,
-                    "end": end,
+                    "start": self.parse_timestamp(start),
+                    "end": self.parse_timestamp(end),
                     "text": text}
         return copy.deepcopy(self.transcription_dict)
 
