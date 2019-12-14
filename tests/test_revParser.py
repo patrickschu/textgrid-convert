@@ -9,7 +9,7 @@ from textgrid_convert.revParser import revParser
 HERE = pathlib.Path(__file__).parent
 RESOURCES = HERE / "resources"
 JSON_IN = RESOURCES / "rev_sample.json"
-JSON_TWO_SPEAKERS_IN = RESOURCES / "rev_sample_two_speakers.json"
+JSON_TWO_SPEAKERS_IN = RESOURCES / "jsons" / "rev_sample_two_speakers.json"
 JSON_OUT = RESOURCES / "rev_sample_textgrid.txt"
 JSON_OUT_DARLA = RESOURCES / "rev_sample_two_speakers_textgrid.txt"
 
