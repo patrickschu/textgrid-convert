@@ -3,11 +3,11 @@ from textgrid_convert.textgridtools import collect_chunk_values, to_long_textgri
 import re
 import pathlib
 import pytest
+from globals import INFILES_GRID, OUTFILES
 
-HERE = pathlib.Path(__file__).parent
-LONG_GRID = HERE / "resources" / "test_long.TextGrid"
-LONG_GRID_OUT = HERE / "long_grid_testout.TextGrid"
-DARLA_OUT = HERE / "long_grid_testout_darla.TextGrid"
+LONG_GRID = INFILES_GRID / "test_long.TextGrid"
+TO_GRID = OUTFILES / "test_long.TextGrid_output.txt"
+TO_DARLA_GRID = OUTFILES / "test_long.TextGrid_darla_output.txt"
 
 TESTDICT = {0: {"speaker_name": "Mary", "text": "one", "start": 0, "end": 0.5896534423132239},
             1: {"speaker_name": "Mary", "text": "",  "end": 1.4123177579131596,"start": 0.5896534423132239},
@@ -44,7 +44,7 @@ def test_to_long_textgrid():
     no_tab_res = re.sub(r"\t", "    ", truegrid)
     no_tab = re.sub(r"\t", "    ", truegrid)
     assert no_tab == no_tab_res
-    with open(str(LONG_GRID_OUT), "w", encoding="utf-8") as gridout:
+    with open(str(TO_GRID), "w", encoding="utf-8") as gridout:
         gridout.write(res)
 
 
@@ -57,7 +57,7 @@ def test_to_long_darla_textgrid():
         darladict[key]["speaker_name"] = "sentence"
     res = to_long_textgrid(darladict)
     assert isinstance(res, str)
-    with open(str(DARLA_OUT), "w", encoding="utf-8") as gridout:
+    with open(str(TO_DARLA_GRID), "w", encoding="utf-8") as gridout:
         gridout.write(res)
 
 if __name__ == "__main__":
