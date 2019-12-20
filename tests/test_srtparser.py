@@ -56,8 +56,3 @@ def test_textgrid_output():
     with open(str(SRT_TO_GRID), "w", encoding="utf-8") as txtgridout:
          txtgridout.write(txtgrid)
 
-
-if __name__ == "__main__":
-    test_textgrid_output()
-    test_srt_parse()
-    test_timeconvert()

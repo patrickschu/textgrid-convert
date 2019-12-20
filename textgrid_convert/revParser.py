@@ -84,8 +84,7 @@ class revParser(ParserABC):
             str to be fed into DARLA
         """
         if not self.transcription_dict:
-            log.debug("Running parse_transcription for %" %self.unique_id)
-            print("RUNUN")
+            log.debug("Running parse_transcription for %s" %self.unique_id)
             self.parse_transcription()
         output_dict = {}
         if speaker_id is not None:

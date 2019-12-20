@@ -1,7 +1,5 @@
 # Abstract Base class for implementing transcription parsers
 import abc
-import copy
-import uuid
 from textgrid_convert import textgridtools as tgtools
 from textgrid_convert import preproctools as pptools
 import logging
@@ -78,7 +76,6 @@ class ParserABC(metaclass=abc.ABCMeta):
         if len(self.transcription_dict) < 1:
             log.debug("No transcription dict found, running parse_transcription()")
             self.parse_transcription(self.transcription)
-            log.debug("trans dict updated:", self.transcription_dict)
         for chunk, values in self.transcription_dict.items():
             # FIXME: maybe this needs to be a parser implemented method
             start, end = values["start"], values["end"]

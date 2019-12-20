@@ -86,9 +86,3 @@ def test_captions_textgrid_output():
     with open(str(SBV_TO_GRID3), "w", encoding="utf-8") as sbvout:
         sbvout.write(txtgrid)
 
-
-if __name__ == "__main__":
-    print("RUN 1")
-    test_textgrid_output()
-    print("RUN 2")
-    test_sbv()

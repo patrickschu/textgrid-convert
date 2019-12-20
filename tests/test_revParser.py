@@ -63,8 +63,3 @@ def test_to_darla_txtgrid():
         rr = revParser(text)
         res = rr.to_darla_textgrid(speaker_id=3, alias="sentence")
 
-if __name__ == "__main__":
-    test_json_read()
-    test_init()
-    test_to_txtgrid()
-    test_to_darla_txtgrid()

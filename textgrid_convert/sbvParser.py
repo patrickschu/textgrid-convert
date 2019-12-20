@@ -4,8 +4,6 @@
 import re
 import logging
 from textgrid_convert.ParserABC import ParserABC
-from textgrid_convert import textgridtools as tgtools 
-from textgrid_convert import preproctools as pptools
 log = logging.getLogger(__name__)
 log.addHandler(logging.StreamHandler())
 log.setLevel(logging.DEBUG)

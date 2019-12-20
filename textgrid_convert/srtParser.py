@@ -48,7 +48,7 @@ class srtParser(ParserABC):
             dict as described above
         """
         if not srt_text:
-            srt_text = self.raw_srt
+            srt_text = self.transcription
         for chunk_id, timestamps, text in self.srt_generator(srt_text.splitlines(), separator=""):
             start, end = timestamps.split(time_stamp_sep)
             self.transcription_dict[chunk_id] = {
