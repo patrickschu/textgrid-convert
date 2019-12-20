@@ -7,6 +7,7 @@ from textgrid_convert import preproctools as pptools
 import logging
 
 log = logging.getLogger(__name__)
+log.setLevel(logging.DEBUG)
 
 TESTDICT = {0: {"speaker_name": "Mary", "text": "one", "start": 0, "end": 0.5896534423132239},
             1: {"speaker_name": "Mary", "text": "",  "end": 1.4123177579131596,"start": 0.5896534423132239},
@@ -35,15 +36,11 @@ class ParserABC(metaclass=abc.ABCMeta):
     """
     Abstract base class for Parsers to feed textgrid conversion
     """
-    transcription_dict = {}
+    unique_id = None
+    transcription = None
+    transcription_dict = None
+    # transcription dict is formatted like so: {chunk_id(int): {"speaker_name": "", "text": "", "start": float, "end": float}}
 
-    def __init__(self, transcription, unique_id=None):
-        """
-        Initialize Parser with raw transcription string and unique_id
-        """
-        self.unique_id = uuid.uuid4() if unique_id is None else unique_id
-        self.transcription = transcription
-        # transcription dict is formatted like so: {chunk_id(int): {"speaker_name": "", "text": "", "start": float, "end": float}}
 
     @abc.abstractmethod
     def parse_timestamp(self, timestamp):
@@ -63,7 +60,7 @@ class ParserABC(metaclass=abc.ABCMeta):
             transcription(str)
         """
 
-    def to_textgrid(self, transcription_dict=None, output_file=None, speaker_name="Speaker1", adapt_endstamps=0.001):
+    def to_textgrid(self, output_file=None, speaker_name="Speaker1", adapt_endstamps=0.001):
         """
         FIXME: add output_file
         Convert internal dict to Praat Textgrid format
@@ -75,15 +72,14 @@ class ParserABC(metaclass=abc.ABCMeta):
         Returns:
             TextGrid compatible string
         """
-        if not transcription_dict:
-            if self.transcription_dict:
-                transcription_dict = self.transcription_dict
-            else:
-                log.debug("Running parse_transcription")
-                transcription_dict = self.parse_transcription(self.transcription)
+        log.debug("trans dict: %s", self.transcription_dict)
         textgrid_dict = {}
         # create correct time stamps
-        for chunk, values in transcription_dict.items():
+        if len(self.transcription_dict) < 1:
+            log.debug("No transcription dict found, running parse_transcription()")
+            self.parse_transcription(self.transcription)
+            log.debug("trans dict updated:", self.transcription_dict)
+        for chunk, values in self.transcription_dict.items():
             # FIXME: maybe this needs to be a parser implemented method
             start, end = values["start"], values["end"]
             textgrid_dict[chunk] = values

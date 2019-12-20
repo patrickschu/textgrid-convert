@@ -22,6 +22,8 @@ class srtParser(ParserABC):
             str_text(str)
         """
         self.transcription = transcription
+        self.transcription_dict = {} 
+        self.parse_transcription(transcription)
 
 
     def parse_timestamp(self, timestamp):
