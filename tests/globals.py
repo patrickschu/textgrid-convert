@@ -1,6 +1,7 @@
 import pathlib
 
 HERE = pathlib.PurePath(__file__).parent
+MAIN_PATH = HERE.parent / "textgrid_convert"
 # READ FILES
 RESOURCES = HERE / "resources"
 INFILES = RESOURCES  / "sample_files"
