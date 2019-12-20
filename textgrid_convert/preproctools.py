@@ -25,7 +25,7 @@ def adapt_timestamps(input_dict, gap=0.1):
         next_key = keys[ind+1]
         next_start = sorted_chunks[next_key].get("start")
         if end >= next_start:
-            new_end = next_start - gap
+            new_end = max(next_start - gap, start)
             sorted_chunks[key]["end"] = new_end
             log.debug("Updated key '%s' end from %f to %f" %(key, end, new_end))
     return sorted_chunks
