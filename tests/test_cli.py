@@ -24,6 +24,7 @@ CWD = pathlib.PurePath(__file__).parent
 @patch("textgrid_convert.iotools.filewriter", autospec=True)
 def test_srt_conversion(mock_writer, mock_convert ):
     """
+    TEST SRT
     """
     infolder, outfolder = str(INFILES_SRT), str(MAIN_PATH)
     informat = "srt"
@@ -40,6 +41,7 @@ def test_srt_conversion(mock_writer, mock_convert ):
 @patch("textgrid_convert.iotools.filewriter", autospec=True)
 def test_sbv_conversion(mock_writer, mock_convert ):
     """
+    TEST SBV
     """
     infolder, outfolder = str(INFILES_SBV), str(MAIN_PATH)
     informat = "srt"
@@ -49,7 +51,7 @@ def test_sbv_conversion(mock_writer, mock_convert ):
     with pytest.raises(ValueError):
         main(**res)
     informat = "sbv"
-    args = ["--i", infolder,  "--f", informat, "--t", "textgrid"]
+    args = ["--i", infolder,  "--f", informat, "--t", "textgrid", "--out", outfolder]
     res = vars(arg_parser.parse_args(args))
     main(**res)
     assert mock_writer.call_count == len(os.listdir(res["input_path"]))
@@ -59,6 +61,7 @@ def test_sbv_conversion(mock_writer, mock_convert ):
 @patch("textgrid_convert.iotools.filewriter", autospec=True)
 def test_json_conversion(mock_writer, mock_convert ):
     """
+    TEST JSON
     """
     infolder, outfolder = str(INFILES_JSON), str(MAIN_PATH)
     informat = "srt"

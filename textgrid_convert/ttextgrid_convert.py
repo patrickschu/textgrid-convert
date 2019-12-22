@@ -49,6 +49,7 @@ def folder_source_format(input_folder, file_types=[".srt", ".sbv", ".json", ".re
     Raises:
         ValueError if mix of extensions
     """
+    input_folder = str(input_folder)
     infiles = [i for i in os.listdir(input_folder)]
     infiles = [i for i in infiles if os.path.splitext(i.lower())[-1] in file_types]
     types = [os.path.splitext(i.lower())[-1]for i in infiles]
@@ -81,8 +82,8 @@ def main(source_format, to,  input_path, output_path=HERE, suffix="_TEXTGRID.txt
             raise ValueError("Works with 'sbv' or 'srt', 'json', 'rev', given '{}'".format(source_format))
     if not any([source_format, input_path]):
         raise ValueError("Either input_path or source format needs to be specified, currently are {} and {}".format(source_format, input_path))
-    # processing
-    if os.path.isdir(input_path):
+    # processing FIXME: outsource this
+    if os.path.isdir(str(input_path)):
         log.debug("Processing folder '{}'".format(str(input_path)))
         if not source_format:
             source_format = folder_source_format(input_path)
