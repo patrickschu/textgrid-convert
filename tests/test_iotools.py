@@ -1,15 +1,14 @@
-import pathlib
-from textgrid_convert.iotools import filewriter
 import os
 import pytest
+import pathlib
+from textgrid_convert.iotools import filewriter
+from globals import OUTFILES
 
-HERE = pathlib.Path(__file__).parent
-RESOURCES = HERE / "resources"
 
 def test_filewrite():
     """
     """
-    outfile = RESOURCES / "writeout.txt"
+    outfile = OUTFILES / "writeout.txt"
     if os.path.isfile(str(outfile)):
         os.remove(str(outfile))
     filewriter(str(outfile), "outstring")
