@@ -75,7 +75,7 @@ def main(source_format, to,  input_path, output_path=HERE, suffix="_TEXTGRID.txt
     """
     log.debug('strict is %s' %strict)
     input_path = pathlib.Path(input_path)
-    input_path = str(input_path)
+    input_path, outlib_path = str(input_path), str(output_path)
     log.debug('input path %s' %input_path)
     if source_format:
         source_format = source_format.lower().strip(" .")
