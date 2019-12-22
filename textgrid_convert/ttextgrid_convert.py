@@ -98,7 +98,9 @@ def main(source_format, to,  input_path, output_path=HERE, suffix="_TEXTGRID.txt
             log.debug("Working on file '{}'".format(fil))
             result = convert_to_txtgrid(fil, source_format)
             if output_path:
-                filename = output_path / (fil.name + suffix)
+                #filename = output_path / (fil.name + suffix)
+                fil_name = os.path.split(fil)[-1]
+                filename = os.path.join(output_path, fil_name + suffix)
                 iotools.filewriter(filename, outstring=result, strict=strict)
 
 
