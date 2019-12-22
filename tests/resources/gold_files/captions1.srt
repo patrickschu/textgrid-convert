@@ -1,0 +1,168 @@
+1
+00:00:06,519 --> 00:00:12,620
+we can extract from a data frame by
+
+2
+00:00:09,560 --> 00:00:16,250
+speaker we can extract by vowel and we
+
+3
+00:00:12,620 --> 00:00:18,669
+can combine those conditions and the
+
+4
+00:00:16,250 --> 00:00:20,990
+magic here is the ampersand operator
+
+5
+00:00:18,669 --> 00:00:24,529
+that's what we're going to use to
+
+6
+00:00:20,990 --> 00:00:28,999
+combine conditions so let's just do it
+
+7
+00:00:24,529 --> 00:00:31,339
+one by one again I start by loading D
+
+8
+00:00:28,999 --> 00:00:35,450
+plier using the library command and then
+
+9
+00:00:31,339 --> 00:00:37,190
+first I'm going to define a vector that
+
+10
+00:00:35,450 --> 00:00:40,520
+contains the vowels that I want to
+
+11
+00:00:37,190 --> 00:00:43,820
+extract let's say trap and kit and then
+
+12
+00:00:40,520 --> 00:00:46,010
+I define a vector that contains the
+
+13
+00:00:43,820 --> 00:00:48,260
+names of the speakers that I want to
+
+14
+00:00:46,010 --> 00:00:50,480
+extract this could be used to define a
+
+15
+00:00:48,260 --> 00:00:53,210
+group of four people for example if you
+
+16
+00:00:50,480 --> 00:00:57,620
+have a larger data set I only have Allen
+
+17
+00:00:53,210 --> 00:01:02,090
+Erma I'll use them both here because why
+
+18
+00:00:57,620 --> 00:01:04,730
+not okay and then I'm going to make a
+
+19
+00:01:02,090 --> 00:01:07,550
+new data frame that is a subset of my
+
+20
+00:01:04,730 --> 00:01:10,760
+master norm I'm going to call it new
+
+21
+00:01:07,550 --> 00:01:14,320
+data and I'm going to use the filter
+
+22
+00:01:10,760 --> 00:01:17,810
+command to filter out of master norm
+
+23
+00:01:14,320 --> 00:01:22,180
+filter out of master norm comma and now
+
+24
+00:01:17,810 --> 00:01:27,110
+the conditions the vowel needs to be
+
+25
+00:01:22,180 --> 00:01:29,030
+percent in percent the my vowels vector
+
+26
+00:01:27,110 --> 00:01:31,580
+so it needs to be a member of that
+
+27
+00:01:29,030 --> 00:01:34,340
+vector drop and KITT and now it combined
+
+28
+00:01:31,580 --> 00:01:39,200
+with the ampersand and the condition
+
+29
+00:01:34,340 --> 00:01:43,159
+speaker must be in the speaker's vector
+
+30
+00:01:39,200 --> 00:01:45,790
+which I just defined so and I want rows
+
+31
+00:01:43,159 --> 00:01:49,729
+that meet both of these conditions
+
+32
+00:01:45,790 --> 00:01:53,869
+either Al or Emma saying either a trap
+
+33
+00:01:49,729 --> 00:01:56,479
+or a KITT vowel now I just ran those
+
+34
+00:01:53,869 --> 00:01:58,250
+first three lines of code and now I'm
+
+35
+00:01:56,479 --> 00:02:01,670
+running the fourth line of code
+
+36
+00:01:58,250 --> 00:02:05,479
+separately and I'm gonna click on my new
+
+37
+00:02:01,670 --> 00:02:08,740
+data frame and it's gonna be shown in
+
+38
+00:02:05,479 --> 00:02:11,569
+the preview event window top left and
+
+39
+00:02:08,740 --> 00:02:13,800
+that's all I have is Emma and Al and
+
+40
+00:02:11,569 --> 00:02:15,580
+they're saying either KITT words
+
+41
+00:02:13,800 --> 00:02:32,269
+trap words
+
+42
+00:02:15,580 --> 00:02:32,269
+[Music]
+

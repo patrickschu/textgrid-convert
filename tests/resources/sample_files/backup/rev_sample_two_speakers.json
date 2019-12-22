@@ -1,0 +1,78 @@
+{
+    "speakers": [
+        {"id": 1, "name": "Interviewee"},
+        {"id": 2, "name": "Interviewer"}
+    ],
+    "monologues": [
+        {
+        "id": 1,
+        "speaker": 1, 
+        "speaker_name": "Interviewee", 
+        "elements": [
+            {
+                "type": "text",
+                "value": "I've never been here before" 
+            },
+            {
+                "type": "tag",
+                "value": "inaudible",
+                "timestamp": "00:00:07,000" 
+            },
+            {
+                "type": "text",
+                "value": " "
+            },
+            {
+                "type": "text",
+                "value": "so",
+                "timestamp": "00:00:20,000",
+                "end_timestamp": "00:00:20,138"
+            },
+            {
+                "type": "text",
+                "value": " "
+            },
+            {
+                "type": "text",
+                "value": "this",
+                "timestamp": "00:00:20,222",
+                "end_timestamp": "00:00:20,566"
+            }]},
+        {
+        "id": 2,
+        "speaker": 2, 
+        "speaker_name": "Interviewer", 
+        "elements": [
+            {
+                "type": "text",
+                "value": "I've never been here before" 
+            },
+            {
+                "type": "tag",
+                "value": "inaudible",
+                "timestamp": "00:00:07,000" 
+            },
+            {
+                "type": "text",
+                "value": " "
+            },
+            {
+                "type": "text",
+                "value": "so",
+                "timestamp": "00:00:20,000",
+                "end_timestamp": "00:00:20,138"
+            },
+            {
+                "type": "text",
+                "value": " "
+            },
+            {
+                "type": "text",
+                "value": "this",
+                "timestamp": "00:00:20,222",
+                "end_timestamp": "00:00:20,566"
+            }
+        ]
+        }
+    ]
+}

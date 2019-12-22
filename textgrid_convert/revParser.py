@@ -34,13 +34,20 @@ class revParser(ParserABC):
     """
     speakers = () # pull info rom Rev JSON here
 
+    def __init__(self, transcription):
+        # raw transcript str
+        self.transcription = transcription
+        # chopped up to convert to other format
+        self.transcription_dict = self.parse_transcription(transcription)
+
+
     def parse_timestamp(self, timestamp):
         """
         Convert from rev timestamps to ms
         """
         return parse_revstamp(timestamp)
 
-    def parse_transcription(self):
+    def parse_transcription(self, speaker=None):
         """
         Specs are here: https://www.rev.com/api/attachmentsgetcontent
         """
@@ -77,12 +84,13 @@ class revParser(ParserABC):
             str to be fed into DARLA
         """
         if not self.transcription_dict:
+            log.debug("Running parse_transcription for %s" %self.unique_id)
             self.parse_transcription()
         output_dict = {}
         if speaker_id is not None:
-            if speaker_id not in [speaker_id for speaker_id, speaker_name in self.speakers]:
-                raise ValueError("Speaker name '{}' not found in set of speakers {}".format(speaker_id, self.speakers))
             print(self.speakers)
+            if speaker_id not in [speaker_id for speaker_id, speaker_name in self.speakers]:
+                raise ValueError("Speaker ID '{}' not found in set of speakers {}".format(speaker_id, self.speakers))
             _ , speaker_name = [(i, n) for i, n in self.speakers if i == speaker_id][0]
         else:
             speaker_id, speaker_name = self.speakers[0]

@@ -4,9 +4,9 @@
 import re
 import logging
 from textgrid_convert.ParserABC import ParserABC
-from textgrid_convert import textgridtools as tgtools 
-from textgrid_convert import preproctools as pptools
 log = logging.getLogger(__name__)
+log.addHandler(logging.StreamHandler())
+log.setLevel(logging.DEBUG)
 
 class sbvParser(ParserABC):
     """
@@ -23,7 +23,8 @@ class sbvParser(ParserABC):
             str_text(str)
         """
         self.transcription = transcription
-        self.parsed_sbv={}# containing sbv content
+        self.transcription_dict = {}
+        self.parse_transcription(transcription)
 
     def parse_timestamp(self, timestamp):
         """
@@ -34,9 +35,8 @@ class sbvParser(ParserABC):
         secs, ms = [int(i) for i in rest.split(".")]
         fulltime = (hrs * 3600000) + (mins * 60000) + (secs * 1000) + ms
         assert isinstance(fulltime, int)
+        print("parsed", fulltime)
         return fulltime
-
-
 
     # FIXME: re compile
     def sbv_textparse(self, speaker_and_text, speaker="Speaker 1", speaker_regex=re.compile("[A-Z]+:")):
@@ -54,7 +54,7 @@ class sbvParser(ParserABC):
         return speaker.rstrip(":"), text
 
 
-    def parse_transcription(self, sbv_text=None, time_stamp_sep=","):
+    def parse_transcription(self, transcription, time_stamp_sep=","):
         """
         Pull the stuff from sbv into a dictionary of format {chunk_id: {
         "speaker": str, 
@@ -62,23 +62,24 @@ class sbvParser(ParserABC):
         "start": int, 
         "end": int}}
         Args:
+            transcription(str)
+            time_stamp_sep (str)
         Returns:
             dict as described above
         """
         chunk_id = 0
-        if not sbv_text:
-            sbv_text = self.raw_sbv
-        for timestamps, speaker_and_text in self.sbv_generator(sbv_text.splitlines(), separator=""):
+        for timestamps, speaker_and_text in self.sbv_generator(self.transcription.splitlines(), separator=""):
             start, end = timestamps.split(time_stamp_sep)
-            previous_entry = self.parsed_sbv.get(chunk_id, {"speaker_name": "Speaker 1"})
+            previous_entry = self.transcription_dict.get(chunk_id, {"speaker_name": "Speaker 1"})
             speaker, text = self.sbv_textparse(speaker_and_text, speaker=previous_entry["speaker_name"])
             chunk_id += 1
-            self.parsed_sbv[chunk_id] = {
+            self.transcription_dict[chunk_id] = {
                     "speaker_name": speaker,
                     "start": self.parse_timestamp(start),  
                     "end": self.parse_timestamp(end),  
                     "text": text}
-        return self.parsed_sbv.copy()
+            log.debug("Added %s for chunk %s" %(self.transcription_dict[chunk_id], chunk_id))
+        return self.transcription_dict.copy()
 
     def sbv_generator(self, filein, separator=""):
         """
@@ -99,4 +100,4 @@ class sbvParser(ParserABC):
                 #print("out", output[:-1])
                 yield output[:-1]
                 output = ()
-        log.debug("sbv generator processed {} lines from {}".format(count, filein))
+        log.debug("sbv generator processed {} lines from {}".format(count, filein[:100]))

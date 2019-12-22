@@ -1,23 +1,36 @@
 import pathlib
 from textgrid_convert.sbvParser import sbvParser
+from globals import INFILES_SBV, OUTFILES
 
-HERE = pathlib.Path(__file__).parent
-SRT_PATH = HERE / "resources" / "downsub.sbv"
-SBV_PATH = HERE / "resources" / "captions.sbv"
-LARS_PATH = HERE / "resources" / "lars_captions.sbv"
-LARS_OUTPATH = HERE / "lars_captions_textgrid.txt" 
-SBV_OUT_PATH = HERE / "txtgrid_sbv.txt"
-SBV_OUT_PATH2 = HERE / "captions_sbv.txt"
 
-def test_lars_sbv():
+CAPTIONS = INFILES_SBV / "captions.sbv"
+DOWNSUB = INFILES_SBV / "downsub.sbv"
+SBV_TO_GRID =  OUTFILES / "sbv_to_grid.TextGrid"
+SBV_TO_GRID2 =  OUTFILES / "sbv_to_grid2.TextGrid"
+SBV_TO_GRID3 =  OUTFILES / "sbv_to_grid3.TextGrid"
+
+def test_textgrid_output():
     """
     """
-    with open(str(LARS_PATH), "r", encoding="utf-8") as sbvin:
+    with open(str(DOWNSUB), "r", encoding="utf-8") as sbvin:
+        txt = sbvin.read()
+    parser = sbvParser(txt)
+    print("this is dowbsub")
+    txtgrid = parser.to_textgrid()
+    with open(str(SBV_TO_GRID), "w", encoding="utf-8") as sbvout:
+        sbvout.write(txtgrid)
+
+def test_sbv():
+    """
+    """
+    with open(str(CAPTIONS), "r", encoding="utf-8") as sbvin:
         sbv = sbvin.read()
     parser = sbvParser(sbv)
+    print("this is captions")
     txtgrid = parser.to_textgrid()
-    with open(str(LARS_OUTPATH), "w", encoding="utf-8") as sbvout:
+    with open(str(SBV_TO_GRID2), "w", encoding="utf-8") as sbvout:
         sbvout.write(txtgrid)
+    del parser
 
 def test_class_init():
     """
@@ -56,32 +69,20 @@ def test_timeconvert():
 def test_sbv_parse():
     """
     """
-    with open(str(SRT_PATH),  "r", encoding="utf-8") as sbvin:
+    with open(str(DOWNSUB),  "r", encoding="utf-8") as sbvin:
         txt = sbvin.read()
     parser = sbvParser(txt)
     assert len(parser.transcription) == 267
     # FIXME: does not actually text parsing
 
-def test_textgrid_output():
-    """
-    """
-    with open(str(SRT_PATH), "r", encoding="utf-8") as sbvin:
-        txt = sbvin.read()
-    parser = sbvParser(txt)
-    txtgrid = parser.to_textgrid()
-    with open(str(SBV_OUT_PATH), "w", encoding="utf-8") as sbvout:
-        sbvout.write(txtgrid)
 
 def test_captions_textgrid_output():
     """
     """
-    with open(str(SBV_PATH), "r", encoding="utf-8") as sbvin:
+    with open(str(CAPTIONS), "r", encoding="utf-8") as sbvin:
         txt = sbvin.read()
     parser = sbvParser(txt)
     txtgrid = parser.to_textgrid()
-    with open(str(SBV_OUT_PATH2), "w", encoding="utf-8") as sbvout:
+    with open(str(SBV_TO_GRID3), "w", encoding="utf-8") as sbvout:
         sbvout.write(txtgrid)
 
-if __name__ == "__main__":
-    test_textgrid_output()
-    test_captions_textgrid_output()
