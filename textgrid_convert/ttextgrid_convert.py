@@ -75,6 +75,7 @@ def main(source_format, to,  input_path, output_path=HERE, suffix="_TEXTGRID.txt
     """
     log.debug('strict is %s' %strict)
     input_path = pathlib.Path(input_path)
+    input_path = str(input_path)
     log.debug('input path %s' %input_path)
     if source_format:
         source_format = source_format.lower().strip(" .")
@@ -83,12 +84,13 @@ def main(source_format, to,  input_path, output_path=HERE, suffix="_TEXTGRID.txt
     if not any([source_format, input_path]):
         raise ValueError("Either input_path or source format needs to be specified, currently are {} and {}".format(source_format, input_path))
     # processing FIXME: outsource this
-    if os.path.isdir(str(input_path)):
+    if os.path.isdir(input_path):
         log.debug("Processing folder '{}'".format(str(input_path)))
         if not source_format:
             source_format = folder_source_format(input_path)
+            #FIXME below
         infiles = [i for i in os.listdir(input_path) if os.path.splitext(i.lower())[-1] == "." + source_format]
-        infiles = [input_path / i for i in infiles]
+        infiles = [os.path.join(input_path, i) for i in infiles]
         if len(infiles) < 1:
             raise ValueError("No relevant sbv or srt files found in folder '{}', contains '{}'".format(input_path, os.listdir(input_path)[:100]))
         log.debug("Processing {} {} files from folder '{}'".format(len(infiles), source_format, str(input_path)))
