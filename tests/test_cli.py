@@ -25,10 +25,9 @@ CWD = pathlib.PurePath(__file__).parent
 def test_srt_conversion(mock_writer, mock_convert ):
     """
     """
-    infolder = str(INFILES_SRT)
+    infolder, outfolder = str(INFILES_SRT), str(MAIN_PATH)
     informat = "srt"
-    #args = [infolder, informat, "-t textgrid"]
-    args = ["--i", infolder,  "--f", informat, "--t", "textgrid"]
+    args = ["--i", infolder,  "--f", informat, "--t", "textgrid", "--out", outfolder]
     res = vars(arg_parser.parse_args(args))
     assert res["strict"] is True
     assert res["input_path"] == infolder 
@@ -42,9 +41,9 @@ def test_srt_conversion(mock_writer, mock_convert ):
 def test_sbv_conversion(mock_writer, mock_convert ):
     """
     """
-    infolder = str(INFILES_SBV)
+    infolder, outfolder = str(INFILES_SBV), str(MAIN_PATH)
     informat = "srt"
-    args = ["--i", infolder,  "--f", informat, "--t", "textgrid"]
+    args = ["--i", infolder,  "--f", informat, "--t", "textgrid", "--out", outfolder]
     res = vars(arg_parser.parse_args(args))
     assert all((res["strict"] is True, res["input_path"] == infolder, str(res["output_path"]) == str(MAIN_PATH)))
     with pytest.raises(ValueError):
@@ -61,9 +60,9 @@ def test_sbv_conversion(mock_writer, mock_convert ):
 def test_json_conversion(mock_writer, mock_convert ):
     """
     """
-    infolder = str(INFILES_JSON)
+    infolder, outfolder = str(INFILES_JSON), str(MAIN_PATH)
     informat = "srt"
-    args = ["--i", infolder,  "--f", informat, "--t", "textgrid"]
+    args = ["--i", infolder,  "--f", informat, "--t", "textgrid", "--out", outfolder]
     res = vars(arg_parser.parse_args(args))
     assert res["strict"] is True
     assert res["input_path"] == str(INFILES_JSON)
