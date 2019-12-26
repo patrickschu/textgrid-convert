@@ -5,10 +5,12 @@ TEXTGRID-CONVERT
 
 textgrid-convert converts audio transcripts such as sbv or srt files to [Praat]() and [DARLA]() compatible TextGrids.
 
+
 1. Install
 ==========
 
 Run `pip install textgrid-convert`. This requires Python 3.
+
 
 2. Use
 ======
