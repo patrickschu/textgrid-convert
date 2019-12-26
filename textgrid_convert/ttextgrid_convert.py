@@ -38,6 +38,30 @@ def convert_to_txtgrid(input_file, source_format, speaker_name="Speaker 1"):
     log.debug("Created TextGrid for file '{}', len {}".format(input_file, len(sourcetext)))
     return txtgrid
 
+def convert_to_darla(input_file, source_format, speaker_name="Speaker 1"):
+    """
+    Convert forom `source_format` in `input_file` to TextGrid
+    Args:
+        input_file(str): path to input srt or sbv file to read from
+        source_format(str): either sbv or srt
+        speaker_name(str): optional speaker name
+    Returns:
+        TextGrid formatted string
+    """
+    with open(input_file, "r", encoding="utf-8") as sourcefile:
+        sourcetext = sourcefile.read()
+        log.debug("Read file '{}' with {} chars".format(input_file, len(sourcetext)))
+    if source_format == "sbv":
+        parser = sbvParser(sourcetext)
+    if source_format == "srt":
+        parser = srtParser(sourcetext)
+    if source_format in ["json", "rev"]:
+        parser = revParser(sourcetext)
+    # this will default to first speaker for rev
+    txtgrid = parser.to_darla_textgrid(alias="sentence")
+    log.debug("Created DARLA TextGrid for file '{}', len {}".format(input_file, len(sourcetext)))
+    return txtgrid
+
 def folder_source_format(input_folder, file_types=[".srt", ".sbv", ".json", ".rev"]):
     """
     Check whether files in `input_foldelibr` have sbv, srt endings
@@ -54,10 +78,13 @@ def folder_source_format(input_folder, file_types=[".srt", ".sbv", ".json", ".re
     infiles = [i for i in infiles if os.path.splitext(i.lower())[-1] in file_types]
     types = [os.path.splitext(i.lower())[-1]for i in infiles]
     if len(infiles) < 1:
-        raise ValueError("No relevant sbv or srt files found in folder '{}', contains '{}'".format(input_folder, os.listdir(input_folder)[:100]))
+        raise ValueError("No relevant sbv or srt files found in folder '{}', contains '{}'".format(
+            input_folder, os.listdir(input_folder)[:100]))
     if len(set(types)) > 1:
-        raise ValueError("Both sbv and srt files found in folder '{}', contains '{}'".format(input_folder, infiles[:100]))
+        raise ValueError("Both sbv and srt files found in folder '{}', contains '{}'".format(
+            input_folder, infiles[:100]))
     assert types[0] in file_types
+    #FIXME do we really need the check above
     return types[0].lstrip(".")
 
 
@@ -84,7 +111,8 @@ def main(source_format, to,  input_path, output_path=HERE, suffix="_TEXTGRID.txt
         if source_format not in ["sbv", "srt", "json", "rev"]:
             raise ValueError("Works with 'sbv' or 'srt', 'json', 'rev', given '{}'".format(source_format))
     if not any([source_format, input_path]):
-        raise ValueError("Either input_path or source format needs to be specified, currently are {} and {}".format(source_format, input_path))
+        raise ValueError("Either input_path or source format needs to be specified, currently are {} and {}".format(
+            source_format, input_path))
     # processing FIXME: outsource this
     if os.path.isdir(input_path):
         log.debug("Processing folder '{}'".format(str(input_path)))
@@ -94,11 +122,16 @@ def main(source_format, to,  input_path, output_path=HERE, suffix="_TEXTGRID.txt
         infiles = [i for i in os.listdir(input_path) if os.path.splitext(i.lower())[-1] == "." + source_format]
         infiles = [os.path.join(input_path, i) for i in infiles]
         if len(infiles) < 1:
-            raise ValueError("No relevant sbv or srt files found in folder '{}', contains '{}'".format(input_path, os.listdir(input_path)[:100]))
+            raise ValueError("No relevant sbv or srt files found in folder '{}', contains '{}'".format(
+                input_path, os.listdir(input_path)[:100]))
         log.debug("Processing {} {} files from folder '{}'".format(len(infiles), source_format, str(input_path)))
         for fil in infiles:
             log.debug("Working on file '{}'".format(fil))
-            result = convert_to_txtgrid(fil, source_format)
+            if to.lower() in ["darla", "darlatextgrid"]:
+                log.debug("Convert file '{}' to DARLA TextGrid".format(fil))
+                result = convert_to_darla(fil, source_format)
+            else:
+                result = convert_to_txtgrid(fil, source_format)
             if output_path:
                 #filename = output_path / (fil.name + suffix)
                 fil_name = os.path.split(fil)[-1]

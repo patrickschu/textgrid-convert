@@ -4,7 +4,8 @@ import textgrid_convert.textgridtools as tgt
 from globals import INFILES_SRT, OUTFILES
 
 DOWNSUB = INFILES_SRT / "downsub.srt"
-SRT_TO_GRID = OUTFILES / "json_to_grid.TextGrid"
+SRT_TO_GRID = OUTFILES / "srt_to_grid.TextGrid"
+SRT_TO_DARLA = OUTFILES / "srt_to_darla.TextGrid"
 
 
 def test_class_init():
@@ -56,3 +57,13 @@ def test_textgrid_output():
     with open(str(SRT_TO_GRID), "w", encoding="utf-8") as txtgridout:
          txtgridout.write(txtgrid)
 
+
+def test_to_darla():
+    """
+    """
+    with open(str(DOWNSUB), "r", encoding="utf-8") as srtin:
+        txt = srtin.read()
+    parser = srtParser(txt)
+    txtgrid = parser.to_darla_textgrid()
+    with open(str(SRT_TO_DARLA), "w", encoding="utf-8") as srtout:
+        srtout.write(txtgrid)

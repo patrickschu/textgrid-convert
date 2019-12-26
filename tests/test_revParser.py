@@ -43,7 +43,6 @@ def test_to_txtgrid():
 def test_to_darla_txtgrid():
     """
     """
-    print("start")
     with open(str(TWO_SPEAKER), "r", encoding="utf-8") as jsonin:
         text = jsonin.read()
     assert len(text) > 10
@@ -54,22 +53,13 @@ def test_to_darla_txtgrid():
     with pytest.raises(ValueError):
         res = rr.to_darla_textgrid(speaker_id=3, alias="sentence2")
     res = rr.to_darla_textgrid(speaker_id=2, alias="sentence2")
-    print(res)
-
-    #assert "sentence2" in res
+    assert "sentence2" in res
     assert isinstance(res, str)
     rr = revParser(text)
     rr.parse_transcription()
     res = rr.to_darla_textgrid(speaker_id=2)
-    with open("IOIOIOI.txt", "w") as testout:
-        testout.write(res)
     assert isinstance(res, str)
     assert "sentence"  in res
     with open(str(JSON_TO_DARLA), "w", encoding="utf-8") as txtgridout:
         txtgridout.write(res)
-    with pytest.raises(ValueError):
-        rr = revParser(text)
-        res = rr.to_darla_textgrid(speaker_id=3, alias="sentence")
 
-if __name__ == "__main__":
-    test_to_darla_txtgrid()
