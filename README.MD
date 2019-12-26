@@ -16,13 +16,13 @@ Python script: `import textgrid-convert`.
 
 ## 2.1. Use from command line
 
-[Install]() first.
-
 `python textgrid-convert` \[*input-file*\] \[*options*\] …
 
 `python textgrid-convert --help` will display a help file.
 
-A *input-files* or *input-folder* have to be specified using the `-i`
+## Required arguments
+
+*input-files* or a *input-folder* have to be specified using the `-i`
 flag.
 
     python textgrid-convert -i transcription.srt
