@@ -50,18 +50,25 @@ Options
 General options
 ---------------
 
-`-i` *FILE*/*FOLDER*., `--input_path` *FILE*/*FOLDER*.  
+`-i` *FILE* / *FOLDER*., `--input_path` *FILE* / *FOLDER*.  
 Read transcriptions from *FILE* or *FOLDER*.
 
 `-f` *FORMAT*, `--from` *FORMAT*, `--source_format` *FORMAT*  
 Specify input format. *FORMAT* can be:
 
-::: {\#input-formats} - `sbv` [docs]() - `srt` [docs]() - `rev` [docs]() :::
+- `sbv` [docs]() 
+
+- `srt` [docs]() 
+
+- `rev` [docs]() 
+
 
 `-t` *FORMAT*, `--to`*FORMAT*  
 Specify output format. *FORMAT* can be:
 
-::: {\#output-formats} - `textgrid` or `TextGrid` [docs]() - `darla` or `DarlaTextGrid` [docs]() :::
+- `textgrid` or `TextGrid` [docs]() 
+
+- `darla` or `DarlaTextGrid` [docs]() :::
 
 `-o` *FILE*, `--output_path` *FILE*  
 Write output to *FILE*.
