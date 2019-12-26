@@ -6,42 +6,91 @@ textgrid-convert converts audio transcripts such as sbv or srt files to [Praat](
 
 
 
-#### 1. Install
+# 1. Install
 
 Run `pip install textgrid-convert`. This requires Python 3.
 
-#### 2. Use
+# 2. Use
 
 You can run run the from the command line or as a regular library from a Python script: `import textgrid-convert`.
 
-##### 2.1. Use from command line
+## 2.1. Use from command line
 
-[Install]() first. The basic logic is to run `python textgrid-convert $ARGUMENTS`.  `python textgrid-convert --help` will display a help file.
+[Install]() first.  
 
-#### 2.1.1 The following arguments are required:
+`python textgrid-convert` [*input-file*] [*options*] ...
 
-`-i` or `--input_path`: location of a transcript or a folder of transcripts
+`python textgrid-convert --help` will display a help file.
 
-> Example:  `python textgrid-convert -i patrick/srt_files/transcript.srt`
+A *input-files* or *input-folder* have to be specified using the `-i` flag. 
 
-> Example:  `python textgrid-convert --input_path patrick/srt_files`
+    python textgrid-convert -i transcription.srt
+    python textgrid-convert -i patrick/transcription_folder
+
+For output to a file, use the optional `-o` option:
+
+    python textgrid-convert -i transcription.srt -o transcription.TextGrid 
+
+## Specifying formats
+
+The format of the input and output files can be specified explicitly. 
+The input format can be specified using the `-f/--from` option, the output format using the `-t/--to` option.
+
+Thus, to convert `interview.sbv` from SBV to Praat TextGrid, you could type:
+
+    python textgrid-convert -i interview.sbv -o TextGrid
+
+If the input or output format is not specified explicitly, textgrid-convert will guess based on the extensions of the filenames.
+
+# Options
+
+## General options {.options}
 
 
-#### 2.1.2 The following arguments are optional:
+`-i` *FILE*/*FOLDER*., `--input_path` *FILE*/*FOLDER*.
 
-`-o` or `--output_path`: location where files should be written to 
-
- >Example:  `python textgrid-convert -i srt_files -o patrick/converted_files # write files to folder patrick/converted_files`
-
-`-f` or `--from`: source format of transcript, e.g. srt if a srt file is to be converted. 
-`-t` or `--to`: target format of conversion, e.g. TextGrid if a file is to be converted to TextGrid.
-
-> Example:  `python textgrid-convert -i srt_files -f srt -t TextGrid # converts from srt to TextGrid`
-
-`--overwrite` : if this flag is passed, existing files will be overwritten. By default, no existing files are changed.
+:   Read transcriptions from *FILE* or *FOLDER*.  
 
 
 
-#### 2.2. Use from Python script
+`-f` *FORMAT*, `--from` *FORMAT*, `--source_format` *FORMAT*
+
+:   Specify input format.  *FORMAT* can be:
+
+    ::: {#input-formats}
+    - `sbv` [docs]()
+    - `srt` [docs]()
+    - `rev` [docs]()
+    :::
 
 
+`-t` *FORMAT*, `--to`*FORMAT*
+
+:   Specify output format.  *FORMAT* can be:
+
+    ::: {#output-formats}
+    - `textgrid` or `TextGrid` [docs]()
+    - `darla` or `DarlaTextGrid` [docs]()
+    :::
+
+
+`-o` *FILE*, `--output_path` *FILE*
+
+:   Write output to *FILE*.  
+
+
+
+## Examples
+
+To convert the file *interview.sbv* from sbv to Praat TextGrid,  simply type
+
+    python textgrid-convert -i interview.sbv -f sbv -t textgrid
+
+
+To convert the file *interview.sbv* from sbv to Praat TextGrid and write to *output.TextGrid*,  simply type
+
+    python textgrid-convert -i interview.sbv -f sbv -t textgrid -o output_TextGrid
+
+To convert the file *interview.json* from rev-formatted transcriptions to DARLA-compatible TextGrid and write to *output.TextGrid*,  simply type
+
+    python textgrid-convert -i interview.json -f rev -t darlatextgrid -o output_TextGrid
