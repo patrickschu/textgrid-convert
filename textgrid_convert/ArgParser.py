@@ -10,10 +10,14 @@ log.addHandler(logging.StreamHandler())
 
 
 HERE = pathlib.Path(os.getcwd())
-ACCEPTED_FORMATS = ["rev", "sbv", "srt", "json"]
-ACCEPTED_FORMATS = ACCEPTED_FORMATS + [i.upper() for i in ACCEPTED_FORMATS]
-ACCEPTED_FORMATS = ACCEPTED_FORMATS + [i + "." for i in ACCEPTED_FORMATS]
-log.debug("Accepted formats are %s" %ACCEPTED_FORMATS)
+# accepted format needs to be "REV" no JSON
+
+ACCEPTED_INPUT_FORMATS = ["rev", "sbv", "srt", "json"]
+ACCEPTED_INPUT_FORMATS = ACCEPTED_INPUT_FORMATS + [i.upper() for i in ACCEPTED_INPUT_FORMATS]
+ACCEPTED_INPUT_FORMATS = ACCEPTED_INPUT_FORMATS + [i + "." for i in ACCEPTED_INPUT_FORMATS]
+log.debug("Accepted input formats are %s" %ACCEPTED_INPUT_FORMATS)
+
+
 
 """
 Flags:
@@ -31,7 +35,7 @@ Set up read write and convert arguments
 arg_parser.add_argument("--input_path", "-i", type=str, help="Path to input file or folder", dest="input_path", required=True )
 arg_parser.add_argument("--output_path", "-o",  help="Path to write output file(s) to", dest="output_path", default=HERE, type=pathlib.PurePath)
 arg_parser.add_argument("--source_format", "--from", "-f", type=str, help="Input format to convert to TextGrid, e.g. sbv or srt",
-        dest="source_format", choices=ACCEPTED_FORMATS)
+        dest="source_format", choices=ACCEPTED_INPUT_FORMATS)
 arg_parser.add_argument("--to", "-t", type=str, help="Output format to convert to, e.g. TextGrid or Darla", dest="to" )
 arg_parser.add_argument("--strict",  action="store_false", help="If set, will overwrite existing files", dest="strict")
 arg_parser.add_argument("--overwrite",  action="store_false", help="If set, will overwrite existing files", dest="strict")
