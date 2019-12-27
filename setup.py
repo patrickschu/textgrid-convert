@@ -10,10 +10,10 @@ from setuptools import find_packages, setup, Command
 
 # Package meta-data.
 NAME = "textgrid-convert"
-DESCRIPTION = "Convert SRT files to other formats"
-URL = 'https://github.com/me/myproject'
-EMAIL = 'me@example.com'
-AUTHOR = 'Awesome Soul'
+DESCRIPTION = "textgrid-convert converts audio transcripts such as sbv or srt files to Praat and DARLA compatible TextGrids."
+URL ="https://github.com/patrickschu/textgrid-convert/"
+EMAIL ="patrickschultz@utexas.edu"
+AUTHOR = "Patrick Schultz, Lars Hinrichs"
 REQUIRES_PYTHON = '>=3.0.0'
 VERSION = '0.1.0'
 
@@ -143,9 +143,7 @@ setup(
         'License :: OSI Approved :: MIT License',
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: Implementation :: CPython',
-        'Programming Language :: Python :: Implementation :: PyPy'
     ],
     # $ setup.py publish support.
     cmdclass={
