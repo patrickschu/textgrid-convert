@@ -12,25 +12,25 @@ Run `pip install textgrid-convert`. This requires Python 3.
 # 2\. Use
 
 You can run run the from the command line or as a regular library from a
-Python script: `import textgrid-convert`.
+Python script: `import textgrid_convert`.
 
 ## 2.1. Use from command line
 
-`python textgrid-convert` \[*input-file*\] \[*options*\] …
+`python -m textgrid_convert` \[*input-file*\] \[*options*\] …
 
-`python textgrid-convert --help` will display a help file.
+`python -m textgrid_convert --help` will display a help file.
 
 ## Required arguments
 
 *input-files* or a *input-folder* have to be specified using the `-i`
 flag.
 
-    python textgrid-convert -i transcription.srt
-    python textgrid-convert -i patrick/transcription_folder
+    python textgrid_convert -i transcription.srt
+    python textgrid_convert -i patrick/transcription_folder
 
 For output to a file, use the optional `-o` option:
 
-    python textgrid-convert -i transcription.srt -o transcription.TextGrid 
+    python textgrid_convert -i transcription.srt -o transcription.TextGrid 
 
 ## Specifying formats
 
@@ -41,7 +41,7 @@ output format using the `-t/--to` option.
 Thus, to convert `interview.sbv` from SBV to Praat TextGrid, you could
 type:
 
-    python textgrid-convert -i interview.sbv -f sbv -t TextGrid
+    python textgrid_convert -i interview.sbv -f sbv -t TextGrid
 
 If the input or output format is not specified explicitly,
 textgrid-convert will guess based on the extensions of the filenames.
@@ -77,14 +77,14 @@ Write output to *FILE*.
 To convert the file *interview.sbv* from sbv to Praat TextGrid, simply
 type
 
-    python textgrid-convert -i interview.sbv -f sbv -t textgrid
+    python textgrid_convert -i interview.sbv -f sbv -t textgrid
 
 To convert the file *interview.sbv* from sbv to Praat TextGrid and write
 to *output.TextGrid*, simply type
 
-    python textgrid-convert -i interview.sbv -f sbv -t textgrid -o output_TextGrid
+    python textgrid_convert -i interview.sbv -f sbv -t textgrid -o output_TextGrid
 
 To convert the file *interview.json* from rev-formatted transcriptions
 to DARLA-compatible TextGrid and write to *output.TextGrid*, simply type
 
-    python textgrid-convert -i interview.json -f rev -t darlatextgrid -o output_TextGrid
+    python textgrid_convert -i interview.json -f rev -t darlatextgrid -o output_TextGrid

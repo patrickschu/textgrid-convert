@@ -101,6 +101,7 @@ def main(source_format, to,  input_path, output_path=HERE, suffix="_TEXTGRID.txt
         strict(Bool): if True, will not overwrite files
     """
     log.debug('strict is %s' %strict)
+    log.debug('HERE is %s' %HERE)
     input_path = pathlib.Path(input_path)
     input_path = str(input_path)
     if output_path:
@@ -136,6 +137,7 @@ def main(source_format, to,  input_path, output_path=HERE, suffix="_TEXTGRID.txt
                 #filename = output_path / (fil.name + suffix)
                 fil_name = os.path.split(fil)[-1]
                 filename = os.path.join(output_path, fil_name + suffix)
+                log.debug("Writing to %s" %filename)
                 iotools.filewriter(filename, outstring=result, strict=strict)
 
 
