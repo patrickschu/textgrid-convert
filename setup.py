@@ -19,7 +19,34 @@ VERSION = '0.1.0'
 
 # What packages are required for this module to be executed?
 REQUIRED = [
-    # 'requests', 'maya', 'records',
+"astroid>=2.3.3",
+"attrs>=19.3.0",
+"et-xmlfile>=1.0.1",
+"importlib-metadata>=1.1.0",
+"isort>=4.3.21",
+"jdcal>=1.4.1",
+"lazy-object-proxy>=1.4.3",
+"mccabe>=0.6.1",
+"more-itertools>=8.0.0",
+"numpy>=1.16.4",
+"openpyxl>=2.6.2",
+"packaging>=19.2",
+"pandas>=0.24.2",
+"pluggy>=0.13.1",
+"py>=1.8.0",
+"pylint>=2.4.4",
+"pyparsing>=2.4.5",
+"pytest>=5.3.1",
+"python-dateutil>=2.8.0",
+"pytz>=2019.1",
+"six>=1.12.0",
+"srt-convert>=0.1.0",
+"typed-ast>=1.4.0",
+"virtualenv>=16.7.2",
+"wcwidth>=0.1.7",
+"wrapt>=1.11.2",
+"XlsxWriter>=1.1.8",
+
 ]
 
 # What packages are optional?
