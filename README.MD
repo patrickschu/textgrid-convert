@@ -3,7 +3,7 @@
 ![](https://github.com/patrickschu/textgrid-convert/workflows/Python%20package/badge.svg)
 
 textgrid-convert converts audio transcripts such as sbv or srt files to
-[Praat]() and [DARLA]() compatible TextGrids.
+[Praat](http://www.fon.hum.uva.nl/praat/) and [DARLA](http://darla.dartmouth.edu/) compatible TextGrids.
 
 # 1\. Install
 
