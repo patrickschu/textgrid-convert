@@ -14,6 +14,10 @@ Run `pip install textgrid-convert`. This requires Python 3.
 You can run run the from the command line or as a regular library from a
 Python script: `import textgrid_convert`.
 
+## 2.1. Use in Python script
+
+TBD
+
 ## 2.1. Use from command line
 
 `python -m textgrid_convert` \[*input-file*\] \[*options*\] …
