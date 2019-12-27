@@ -49,17 +49,17 @@ def test_to_darla_txtgrid():
     dicti = json.loads(text)
     rr = revParser(text)
     rr.parse_transcription()
-    res = rr.to_darla_textgrid(alias="sentence2")
-    #assert "sentence2" in res
+    #non existent speaker
+    with pytest.raises(ValueError):
+        res = rr.to_darla_textgrid(speaker_id=3, alias="sentence2")
+    res = rr.to_darla_textgrid(speaker_id=2, alias="sentence2")
+    assert "sentence2" in res
     assert isinstance(res, str)
     rr = revParser(text)
     rr.parse_transcription()
     res = rr.to_darla_textgrid(speaker_id=2)
     assert isinstance(res, str)
-    assert "sentence2" not in res
+    assert "sentence"  in res
     with open(str(JSON_TO_DARLA), "w", encoding="utf-8") as txtgridout:
         txtgridout.write(res)
-    with pytest.raises(ValueError):
-        rr = revParser(text)
-        res = rr.to_darla_textgrid(speaker_id=3, alias="sentence")
 

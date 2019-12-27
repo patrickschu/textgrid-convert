@@ -58,7 +58,7 @@ class ParserABC(metaclass=abc.ABCMeta):
             transcription(str)
         """
 
-    def to_textgrid(self, output_file=None, speaker_name="Speaker1", adapt_endstamps=0.001):
+    def to_textgrid(self, input_dict=None, output_file=None, speaker_name="Speaker1", adapt_endstamps=0.001):
         """
         FIXME: add output_file
         Convert internal dict to Praat Textgrid format
@@ -70,13 +70,16 @@ class ParserABC(metaclass=abc.ABCMeta):
         Returns:
             TextGrid compatible string
         """
-        log.debug("trans dict: %s", self.transcription_dict)
         textgrid_dict = {}
-        # create correct time stamps
-        if len(self.transcription_dict) < 1:
+        if input_dict is None:
+            input_dict = self.transcription_dict
+        # if not given or empty, default to self.transcription_dict`
+        if len(input_dict) < 1:
             log.debug("No transcription dict found, running parse_transcription()")
             self.parse_transcription(self.transcription)
-        for chunk, values in self.transcription_dict.items():
+            input_dict = self.transcription_dict
+        log.debug("Input dict has %s items" %len(input_dict))
+        for chunk, values in input_dict.items():
             # FIXME: maybe this needs to be a parser implemented method
             start, end = values["start"], values["end"]
             textgrid_dict[chunk] = values

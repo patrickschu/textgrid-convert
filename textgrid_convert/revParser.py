@@ -5,6 +5,8 @@ import json
 import logging
 
 log = logging.getLogger(__name__)
+log.setLevel(logging.DEBUG)
+log.addHandler(logging.StreamHandler())
 
 
 def parse_revstamp(timestamp):
@@ -86,23 +88,23 @@ class revParser(ParserABC):
         if not self.transcription_dict:
             log.debug("Running parse_transcription for %s" %self.unique_id)
             self.parse_transcription()
-        output_dict = {}
         if speaker_id is not None:
-            print(self.speakers)
             if speaker_id not in [speaker_id for speaker_id, speaker_name in self.speakers]:
                 raise ValueError("Speaker ID '{}' not found in set of speakers {}".format(speaker_id, self.speakers))
             _ , speaker_name = [(i, n) for i, n in self.speakers if i == speaker_id][0]
         else:
             speaker_id, speaker_name = self.speakers[0]
         log.debug("Speaker name set to '%s'" %speaker_name)
-        print("Speaker name set to '%s'" %speaker_name)
         darla_dict = copy.deepcopy(self.transcription_dict)
-        darla_dict = {k:v for k,v in darla_dict.items() if v["speaker_name"] == speaker_name}
+        output_dict = {k:v for k,v in darla_dict.items() if v["speaker_name"] == speaker_name}
         log.debug("Transcription dict going into DARLA has {} items".format(len(darla_dict)))
         log.debug("Setting tier name to '%s'" %alias)
         for key, values in darla_dict.items():
+            print(key, values)
+            print("l;")
             output_dict[key] = values
-            output_dict[key].update({"speaker_name": alias}) 
-        textgrid = self.to_textgrid(output_dict)
+            output_dict[key]["speaker_name"]  = alias
+        print("ouy", output_dict)
+        textgrid = self.to_textgrid(output_dict, speaker_name="IO")
         return textgrid
 

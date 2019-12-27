@@ -6,7 +6,7 @@ import logging
 from textgrid_convert.ParserABC import ParserABC
 log = logging.getLogger(__name__)
 log.addHandler(logging.StreamHandler())
-log.setLevel(logging.DEBUG)
+#log.setLevel(logging.DEBUG)
 
 class sbvParser(ParserABC):
     """
@@ -35,7 +35,6 @@ class sbvParser(ParserABC):
         secs, ms = [int(i) for i in rest.split(".")]
         fulltime = (hrs * 3600000) + (mins * 60000) + (secs * 1000) + ms
         assert isinstance(fulltime, int)
-        print("parsed", fulltime)
         return fulltime
 
     # FIXME: re compile
@@ -93,11 +92,40 @@ class sbvParser(ParserABC):
         count = 0
         output = ()
         for line in filein:
-            #print("l", line)
             count +=1
             output = output + (line, )
             if count % 3 == 0:
-                #print("out", output[:-1])
                 yield output[:-1]
                 output = ()
         log.debug("sbv generator processed {} lines from {}".format(count, filein[:100]))
+
+
+    def to_darla_textgrid(self, speaker_id=None, speaker_name=None, alias="sentence"):
+        """
+        Change TextGrid to the format DARLA understands: only "sentence" grids
+        Args:
+            speaker_id(int): NA for sbvs
+            speaker_name(str): name of the speaker to extact
+            alias: the name to use for texttier -- DARLA wants 'sentence'
+        Returns:
+            str to be fed into DARLA
+        """
+        if not self.transcription_dict:
+            log.debug("Running parse_transcription for %s" %self.unique_id)
+            self.parse_transcription()
+        darla_dict = dict(self.transcription_dict)
+        output_dict = dict(darla_dict)
+        if speaker_name is not None:
+            log.debug("Speaker name set to '%s'" %speaker_name)
+            output_dict = {k:v for k,v in output_dict.items() if v["speaker_name"] == speaker_name}
+            if not output_dict:
+                existing_speakers = {v["speaker_name"] for k,v in output_dict.items()}
+                raise ValueError("Speaker name '{}' not found in set of speakers '{}'".format(speaker_name, set(existing_speakers)))
+        log.debug("Transcription dict going into DARLA has {} items".format(len(darla_dict)))
+        log.debug("Setting tier name to '%s'" %alias)
+        for key, values in darla_dict.items():
+            output_dict[key] = values
+            output_dict[key]["speaker_name"]  = alias
+        textgrid = self.to_textgrid(output_dict, speaker_name="IO")
+        return textgrid
+

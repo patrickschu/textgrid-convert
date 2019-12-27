@@ -8,6 +8,7 @@ DOWNSUB = INFILES_SBV / "downsub.sbv"
 SBV_TO_GRID =  OUTFILES / "sbv_to_grid.TextGrid"
 SBV_TO_GRID2 =  OUTFILES / "sbv_to_grid2.TextGrid"
 SBV_TO_GRID3 =  OUTFILES / "sbv_to_grid3.TextGrid"
+SBV_TO_GRID4 =  OUTFILES / "sbv_to_darla.TextGrid"
 
 def test_textgrid_output():
     """
@@ -86,3 +87,12 @@ def test_captions_textgrid_output():
     with open(str(SBV_TO_GRID3), "w", encoding="utf-8") as sbvout:
         sbvout.write(txtgrid)
 
+def test_to_darla():
+    """
+    """
+    with open(str(CAPTIONS), "r", encoding="utf-8") as sbvin:
+        txt = sbvin.read()
+    parser = sbvParser(txt)
+    txtgrid = parser.to_darla_textgrid()
+    with open(str(SBV_TO_GRID4), "w", encoding="utf-8") as sbvout:
+        sbvout.write(txtgrid)
