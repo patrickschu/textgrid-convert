@@ -40,7 +40,6 @@ REQUIRED = [
 "python-dateutil>=2.8.0",
 "pytz>=2019.1",
 "six>=1.12.0",
-"srt-convert>=0.1.0",
 "typed-ast>=1.4.0",
 "virtualenv>=16.7.2",
 "wcwidth>=0.1.7",
