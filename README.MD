@@ -1,6 +1,8 @@
 # TEXTGRID-CONVERT
 
-![](https://github.com/patrickschu/textgrid-convert/workflows/Python%20package/badge.svg)
+![](https://github.com/patrickschu/textgrid-convert/workflows/Python%20package%20Ubuntu/badge.svg)
+![](https://github.com/patrickschu/textgrid-convert/workflows/Python%20package%20MacOS/badge.svg)
+![](https://github.com/patrickschu/textgrid-convert/workflows/Python%20package%20Windows/badge.svg)
 
 textgrid-convert converts audio transcripts such as sbv or srt files to
 [Praat](http://www.fon.hum.uva.nl/praat/) and [DARLA](http://darla.dartmouth.edu/) compatible TextGrids.
@@ -60,11 +62,11 @@ Read transcriptions from *FILE* or *FOLDER*.
 `-f` *FORMAT*, `--from` *FORMAT*, `--source_format` *FORMAT*  
 Specify input format. *FORMAT* can be:
 
-  - `sbv` [docs]()
+  - `sbv` [docs](https://support.google.com/youtube/answer/2734698?hl=en&ref_topic=7296214)
 
-  - `srt` [docs]()
+  - `srt` [docs](https://support.google.com/youtube/answer/2734698?hl=en&ref_topic=7296214)
 
-  - `rev` [docs]()
+  - `rev` [docs](https://www.rev.com/api/attachmentsgetcontent)
 
 `-t` *FORMAT*, `--to`*FORMAT*  
 Specify output format. *FORMAT* can be:

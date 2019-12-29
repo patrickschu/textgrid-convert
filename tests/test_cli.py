@@ -15,7 +15,7 @@ import pathlib
 import pytest
 from unittest.mock import patch
 from textgrid_convert.ArgParser import arg_parser
-from textgrid_convert.ttextgrid_convert import main
+from textgrid_convert.ttextgrid_convert import main, guess_source_format
 from globals import INFILES_SRT, INFILES_SBV, INFILES_JSON, MAIN_PATH
 
 CWD = pathlib.PurePath(__file__).parent
@@ -102,4 +102,34 @@ def test_darla_conversion(mock_writer, mock_convert ):
         assert mock_convert.call_count == len(os.listdir(res["input_path"]))
         mock_writer.call_count = 0
         mock_convert.call_count = 0
- 
+
+# TEST SINGLE FILES 
+@patch("textgrid_convert.ttextgrid_convert.convert_to_darla", autospec=True)
+@patch("textgrid_convert.iotools.filewriter", autospec=True)
+def test_darla_conversion_single(mock_writer, mock_convert ):
+    """
+    """
+    for ext, path in FORMAT_DICT.items():
+        infolder, outfolder = str(path), str(MAIN_PATH)
+        infile = os.listdir(infolder)[0]
+        informat = ext 
+        args = ["--i", infile,  "--f", informat, "--t", "darla", "--out", outfolder]
+        res = vars(arg_parser.parse_args(args))
+        assert res["strict"] is True
+        assert res["input_path"] == str(infile)
+        assert str(res["output_path"]) == str(MAIN_PATH)
+        main(**res)
+        assert mock_writer.call_count == 1
+        assert mock_convert.call_count == 1
+        mock_writer.call_count = 0
+        mock_convert.call_count = 0
+
+
+
+def test_guess_format():
+    SOURCE_FORMAT_DICT = dict((("UIUIUI.txt.srt", "srt"), ("folder/below/transcript.sbv", "sbv"), ("test.json", "rev")))
+    for path, form in SOURCE_FORMAT_DICT.items():
+        assert guess_source_format(path) == form
+    assert guess_source_format("testi.txt") is None
+
+
