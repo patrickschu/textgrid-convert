@@ -88,9 +88,9 @@ type
 To convert the file *interview.sbv* from sbv to Praat TextGrid and write
 to *output.TextGrid*, simply type
 
-    python -m textgrid_convert -i interview.sbv -f sbv -t textgrid -o output_TextGrid
+    python -m textgrid_convert -i interview.sbv -f sbv -t textgrid -o output.TextGrid
 
 To convert the file *interview.json* from rev-formatted transcriptions
 to DARLA-compatible TextGrid and write to *output.TextGrid*, simply type
 
-    python -m textgrid_convert -i interview.json -f rev -t darlatextgrid -o output_TextGrid
+    python -m textgrid_convert -i interview.json -f rev -t darlatextgrid -o output.TextGrid
