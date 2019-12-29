@@ -15,6 +15,31 @@ log.setLevel(logging.DEBUG)
 
 HERE = pathlib.Path(os.getcwd())
 
+FILE_EXT_TO_FORMAT = {
+    "json": "rev",
+    "srt": "srt",
+    "sbv": "sbv"
+}
+
+
+def guess_source_format(input_path, extension_map=FILE_EXT_TO_FORMAT):
+    """
+    Based on file extension of `input_path`, guess the format of transcription file.
+    Args:
+        input_path(str): file name
+        extension_map(dict): dictoinary {file_ext: format}, e.g. {"srt": "srt"}
+    Returns:
+        format string, None if not found in `extension_map`
+    """ 
+    _, ext = os.path.splitext(input_path)
+    ext = ext.strip(".")
+    source_format = extension_map.get(ext)
+    if source_format is None:
+        log.warning("Cannot guess source format for file '%s' (options are: %s)" %(input_path, extension_map.keys()))
+    return source_format
+
+
+
 def convert_to_txtgrid(input_file, source_format, speaker_name="Speaker 1"):
     """
     Convert forom `source_format` in `input_file` to TextGrid
@@ -73,6 +98,7 @@ def folder_source_format(input_folder, file_types=[".srt", ".sbv", ".json", ".re
     Raises:
         ValueError if mix of extensions
     """
+    # FIXME: this should use guess_format
     input_folder = str(input_folder)
     infiles = [i for i in os.listdir(input_folder)]
     infiles = [i for i in infiles if os.path.splitext(i.lower())[-1] in file_types]
@@ -86,7 +112,6 @@ def folder_source_format(input_folder, file_types=[".srt", ".sbv", ".json", ".re
     assert types[0] in file_types
     #FIXME do we really need the check above
     return types[0].lstrip(".")
-
 
 def main(source_format, to,  input_path, output_path=HERE, suffix="_TEXTGRID.txt", strict=True):
     """
@@ -128,7 +153,7 @@ def main(source_format, to,  input_path, output_path=HERE, suffix="_TEXTGRID.txt
         log.debug("Processing {} {} files from folder '{}'".format(len(infiles), source_format, str(input_path)))
         for fil in infiles:
             log.debug("Working on file '{}'".format(fil))
-            if to.lower() in ["darla", "darlatextgrid"]:
+            if to and to.lower() in ["darla", "darlatextgrid"]:
                 log.debug("Convert file '{}' to DARLA TextGrid".format(fil))
                 result = convert_to_darla(fil, source_format)
             else:
@@ -139,8 +164,23 @@ def main(source_format, to,  input_path, output_path=HERE, suffix="_TEXTGRID.txt
                 filename = os.path.join(output_path, fil_name + suffix)
                 log.debug("Writing to %s" %filename)
                 iotools.filewriter(filename, outstring=result, strict=strict)
-
-
+    else:
+        log.debug("Working on file '%s'" %input_path)
+        if not source_format:
+            source_format = guess_source_format(input_path)
+            if not source_format:
+                raise IOError("Don't know what source format file '%s' is. Specify with option `-f`", input_path)
+        if to and to.lower() in ["darla", "darlatextgrid"]:
+            result = convert_to_darla(input_path, source_format)
+        else:
+            result = convert_to_txtgrid(input_path, source_format)
+        if output_path:
+            #filename = output_path / (fil.name + suffix)
+            fil_name = os.path.split(input_path)[-1]
+            filename = os.path.join(output_path, fil_name + suffix)
+            log.debug("Writing to %s" %filename)
+            iotools.filewriter(filename, outstring=result, strict=strict)
+            log.debug("Written to %s", filename)
 
 if __name__ == "__main__":
     current_args = arg_parser.parse_args()
