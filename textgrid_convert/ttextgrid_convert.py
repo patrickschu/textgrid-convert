@@ -174,13 +174,13 @@ def main(source_format, to,  input_path, output_path=HERE, suffix="_TEXTGRID.txt
             result = convert_to_darla(input_path, source_format)
         else:
             result = convert_to_txtgrid(input_path, source_format)
-        if output_path:
-            #filename = output_path / (fil.name + suffix)
-            fil_name = os.path.split(input_path)[-1]
-            filename = os.path.join(output_path, fil_name + suffix)
-            log.debug("Writing to %s" %filename)
-            iotools.filewriter(filename, outstring=result, strict=strict)
-            log.debug("Written to %s", filename)
+        if not output_path:
+            output_path = HERE 
+        fil_name = os.path.split(input_path)[-1]
+        filename = os.path.join(output_path, fil_name + suffix)
+        log.debug("Writing to %s" %filename)
+        iotools.filewriter(filename, outstring=result, strict=strict)
+        log.debug("Written to %s", filename)
 
 if __name__ == "__main__":
     current_args = arg_parser.parse_args()
