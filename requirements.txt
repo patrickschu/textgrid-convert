@@ -8,3 +8,4 @@ pytz==2019.1
 six==1.12.0
 virtualenv==16.7.2
 XlsxWriter==1.1.8
+textgrid-convert
