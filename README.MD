@@ -94,3 +94,7 @@ To convert the file *interview.json* from rev-formatted transcriptions
 to DARLA-compatible TextGrid and write to *output.TextGrid*, simply type
 
     python -m textgrid_convert -i interview.json -f rev -t darlatextgrid -o output.TextGrid
+
+## Documentation
+
+To be added [here](https://textgrid-convert.readthedocs.io/en/latest/)
