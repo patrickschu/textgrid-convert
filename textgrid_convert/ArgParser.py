@@ -1,4 +1,6 @@
-# main running stuff
+"""
+Functionality to parse CLI arguments.
+"""
 import pathlib
 import argparse
 import os
@@ -8,7 +10,6 @@ log.setLevel(logging.DEBUG)
 log.addHandler(logging.StreamHandler())
 
 
-
 HERE = pathlib.Path(os.getcwd())
 # accepted format needs to be "REV" no JSON
 
@@ -16,8 +17,6 @@ ACCEPTED_INPUT_FORMATS = ["rev", "sbv", "srt", "json"]
 ACCEPTED_INPUT_FORMATS = ACCEPTED_INPUT_FORMATS + [i.upper() for i in ACCEPTED_INPUT_FORMATS]
 ACCEPTED_INPUT_FORMATS = ACCEPTED_INPUT_FORMATS + [i + "." for i in ACCEPTED_INPUT_FORMATS]
 log.debug("Accepted input formats are %s" %ACCEPTED_INPUT_FORMATS)
-
-
 
 """
 Flags:

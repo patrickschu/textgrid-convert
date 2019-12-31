@@ -12,6 +12,7 @@ class sbvParser(ParserABC):
     """
     Read and parse an sbv formatted file
     Inofficial specs here: GGL 
+
     Attributes:
         file_name(optional)
         sbv_text(str)
@@ -19,6 +20,7 @@ class sbvParser(ParserABC):
     def __init__(self, transcription):
         """
         Initializer
+
         Args:
             str_text(str)
         """
@@ -42,7 +44,8 @@ class sbvParser(ParserABC):
         """
         Args:
             speaker_and_text(str)
-        Returns tuple (SPEAKER(str), text(str))
+        Returns:
+            tuple (SPEAKER(str), text(str))
         """
         raw_text = speaker_and_text.lstrip(">")
         new_speaker = speaker_regex.search(raw_text.lstrip())
@@ -60,9 +63,10 @@ class sbvParser(ParserABC):
         "text": str, 
         "start": int, 
         "end": int}}
+
         Args:
-            transcription(str)
-            time_stamp_sep (str)
+            transcription(str) : 
+            time_stamp_sep (str) : 
         Returns:
             dict as described above
         """
@@ -103,6 +107,7 @@ class sbvParser(ParserABC):
     def to_darla_textgrid(self, speaker_id=None, speaker_name=None, alias="sentence"):
         """
         Change TextGrid to the format DARLA understands: only "sentence" grids
+
         Args:
             speaker_id(int): NA for sbvs
             speaker_name(str): name of the speaker to extact

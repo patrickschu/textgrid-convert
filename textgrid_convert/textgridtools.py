@@ -17,93 +17,11 @@ testdict = {0: {"speaker": "Mary", "text": "one", "start": 0, "end": 0.589653442
                },
             5: {"speaker": "John", "start": 0, "end": 12.804852607709751, "text": "" }}
 
-"""
-xmin = 0 
-xmax = 12.804852607709751 
-tiers? <exists> 
-size = 3 
-item []: 
-    item [1]:
-        class = "IntervalTier" 
-        name = "Mary" 
-        xmin = 0 
-        xmax = 12.804852607709751 
-        intervals: size = 5 
-        intervals [1]:
-            xmin = 0 
-            xmax = 0.5896534423132239 
-            text = "one" 
-        intervals [2]:
-            xmin = 0.5896534423132239 
-            xmax = 1.4123177579131596 
-            text = "" 
-        intervals [3]:
-            xmin = 1.4123177579131596 
-            xmax = 2.343227378197297 
-            text = "two" 
-        intervals [4]:
-            xmin = 2.343227378197297 
-            xmax = 3.1225935719235522 
-            text = "three" 
-        intervals [5]:
-            xmin = 3.1225935719235522 
-            xmax = 12.804852607709751 
-            text = "rest of the text * @ " 
-    item [2]:
-        class = "IntervalTier" 
-        name = "John" 
-        xmin = 0 
-        xmax = 12.804852607709751 
-        intervals: size = 1 
-        intervals [1]:
-            xmin = 0 
-            xmax = 12.804852607709751 
-            text = "" 
-    item [3]:
-        class = "TextTier" 
-        name = "bell" 
-        xmin = 0 
-        xmax = 12.804852607709751 
-        points: size = 0 
-
-
-"""
-
-#short below
-"""
-File type = "ooTextFile"
-Object class = "TextGrid"
-
-0
-2.3
-<exists>
-3
-"IntervalTier"
-"Mary"
-0
-2.3
-1
-0
-2.3
-""
-"IntervalTier"
-"John"
-0
-2.3
-1
-0
-2.3
-""
-"TextTier"
-"bell"
-0
-2.3
-0
-"""
 
 def ms_to_textgrid(milliseconds, strict=True):
     """
-    Convert milliseconds to textgrid appropriate format 12.88
+    Convert milliseconds to textgrid appropriate format,e.g. 12.88
+
     Args:
         milliseconds (int)
         strict(Bool): if True, will error out if no int given
@@ -115,9 +33,11 @@ def ms_to_textgrid(milliseconds, strict=True):
 
 def to_textgrid_time(timestamp, split_char="."):
     """
+    FIXME: deprecate
     Output needs to be in mili seconds, round to 2
+
     Args:
-    00:52:58,579            timestamp (str)
+        timestamp(str)
     Returns 
     """
     if not isinstance(timestamp, str):
@@ -143,10 +63,13 @@ def to_short_textgrid(tier_dict):
 def collect_chunk_values(input_dict, key, strict=True):
     """
     Collect all values associated with chunks in input_dict.
+
     Args:
         input_dict(dict): {chunk_id: {key: value}}
         key(str)
         strict(Bool): if True, will error out if `key` not present
+    Returns:
+        list of results
     """
     results = [] 
     for input_key, values in input_dict.items():
@@ -161,8 +84,14 @@ def collect_chunk_values(input_dict, key, strict=True):
 
 def to_long_textgrid(tier_dict, tier_key="speaker_name", tier_class="IntervalTier"):
     """
-    Create long form TextGrid, 
-    cf specs here:http://www.fon.hum.uva.nl/praat/manual/TextGrid_file_formats.html
+    Create long form TextGrid, cf specs here:http://www.fon.hum.uva.nl/praat/manual/TextGrid_file_formats.html.
+
+    Args:
+        tier_dict(dict): 
+        tier_key(str) :  
+        tier_class(str) :  tier class to use for TextGrid
+    Returns:
+        str of TextGrid 
     """
     tier_names = set(collect_chunk_values(tier_dict, tier_key))
     tier_times = collect_chunk_values(tier_dict, "start") + collect_chunk_values(tier_dict, "end")
@@ -201,6 +130,3 @@ def to_long_textgrid(tier_dict, tier_key="speaker_name", tier_class="IntervalTie
             tier_intervals.append(interval_str)
         tiers = tiers + [tier_intro + "\n".join(tier_intervals)]
     return "\n".join([file_str, "\n".join(tiers)]) 
-
-
-

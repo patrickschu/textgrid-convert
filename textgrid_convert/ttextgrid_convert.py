@@ -25,6 +25,7 @@ FILE_EXT_TO_FORMAT = {
 def guess_source_format(input_path, extension_map=FILE_EXT_TO_FORMAT):
     """
     Based on file extension of `input_path`, guess the format of transcription file.
+
     Args:
         input_path(str): file name
         extension_map(dict): dictoinary {file_ext: format}, e.g. {"srt": "srt"}
@@ -40,7 +41,8 @@ def guess_source_format(input_path, extension_map=FILE_EXT_TO_FORMAT):
 
 def convert_to_txtgrid(input_file, source_format, speaker_name="Speaker 1"):
     """
-    Convert forom `source_format` in `input_file` to TextGrid
+    Convert from `source_format` in `input_file` to TextGrid.
+
     Args:
         input_file(str): path to input srt or sbv file to read from
         source_format(str): either sbv or srt
@@ -63,7 +65,8 @@ def convert_to_txtgrid(input_file, source_format, speaker_name="Speaker 1"):
 
 def convert_to_darla(input_file, source_format, speaker_name="Speaker 1"):
     """
-    Convert forom `source_format` in `input_file` to TextGrid
+    Convert from `source_format` in `input_file` to DARLA-compatible TextGrid
+
     Args:
         input_file(str): path to input srt or sbv file to read from
         source_format(str): either sbv or srt
@@ -88,6 +91,7 @@ def convert_to_darla(input_file, source_format, speaker_name="Speaker 1"):
 def folder_source_format(input_folder, file_types=[".srt", ".sbv", ".json", ".rev"]):
     """
     Check whether files in `input_foldelibr` have sbv, srt endings
+
     Args:
         input_folder(str)
         file_types (iterable of str): file endings to consider
@@ -115,6 +119,7 @@ def main(source_format, to,  input_path, output_path=HERE, suffix="_TEXTGRID.txt
     """
     Convert files(s) from `input_path` from  `to` format to TextGrid. Optionally, write to `output_path`
     Example: convert from=sbv to=TextGrid and write to output_path="home/patrick/output"
+
     Args:
         source_format(str) : file ending, currently accepts sbv and srt
         to (str) : file ending, only accepts TextGrid atm

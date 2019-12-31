@@ -1,4 +1,6 @@
-# Abstract Base class for implementing transcription parsers
+"""
+Abstract Base class for implementing transcription parsers
+"""
 import abc
 from textgrid_convert import textgridtools as tgtools
 from textgrid_convert import preproctools as pptools
@@ -7,13 +9,13 @@ import logging
 log = logging.getLogger(__name__)
 log.setLevel(logging.DEBUG)
 
-TESTDICT = {0: {"speaker_name": "Mary", "text": "one", "start": 0, "end": 0.5896534423132239},
-            1: {"speaker_name": "Mary", "text": "",  "end": 1.4123177579131596,"start": 0.5896534423132239},
-            2: {"speaker_name": "Mary", "text": "two",  "end": 2.343227378197297, "start": 1.4123177579131596},
-            3: {"speaker_name": "Mary", "text": "three",  "end": 3.1225935719235522, "start": 2.343227378197297},
-            4: {"speaker_name": "Mary", "start": 3.1225935719235522, "end": 12.804852607709751, "text": "rest of the text * @ " 
-               },
-            5: {"speaker_name": "John", "start": 0, "end": 12.804852607709751, "text": "" }}
+#TESTDICT = {0: {"speaker_name": "Mary", "text": "one", "start": 0, "end": 0.5896534423132239},
+#            1: {"speaker_name": "Mary", "text": "",  "end": 1.4123177579131596,"start": 0.5896534423132239},
+#            2: {"speaker_name": "Mary", "text": "two",  "end": 2.343227378197297, "start": 1.4123177579131596},
+#            3: {"speaker_name": "Mary", "text": "three",  "end": 3.1225935719235522, "start": 2.343227378197297},
+#            4: {"speaker_name": "Mary", "start": 3.1225935719235522, "end": 12.804852607709751, "text": "rest of the text * @ " 
+#               },
+#            5: {"speaker_name": "John", "start": 0, "end": 12.804852607709751, "text": "" }}
 
 """
 Parser takes in a string
@@ -44,6 +46,7 @@ class ParserABC(metaclass=abc.ABCMeta):
     def parse_timestamp(self, timestamp):
         """
         Convert timestamp to datetime.tme
+
         Args:
             timestamp(str)
         Returns:
@@ -54,6 +57,7 @@ class ParserABC(metaclass=abc.ABCMeta):
     def parse_transcription(self, transcription):
         """
         Convert transcription input to transcription dictionary
+
         Args:
             transcription(str)
         """
@@ -64,6 +68,7 @@ class ParserABC(metaclass=abc.ABCMeta):
         Convert internal dict to Praat Textgrid format
         "Specs" here: http://www.fon.hum.uva.nl/praat/manual/Intro_7__Annotation.html
         Time needs to be secs.milisecs, round to 2
+
         Args:
             speaker_name (str)
             adapt_endstamps(float): if given, will adapt end stamps to < start stamp
