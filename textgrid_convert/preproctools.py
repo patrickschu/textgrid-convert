@@ -1,3 +1,7 @@
+"""
+Data preprocessing tools. 
+"""
+
 from collections import OrderedDict
 import logging
 import copy
@@ -5,11 +9,11 @@ log = logging.getLogger(__name__)
 
 def adapt_timestamps(input_dict, gap=0.1):
     """
-    Adapt time end stamps to not overlap with previous stamp
+    Adapt time end stamps to not overlap with following start time stamp.
+
     Args:
-        input_dict(dict)
-        gap(float): gap to introduce between end and start index after
-        adapt
+        input_dict(dict) : dictionary with timestamps, e.g. self.transcription_dict in a Parser
+        gap(float): gap to introduce between end and start index after adapt
     Returns:
         dict
     """
@@ -29,9 +33,5 @@ def adapt_timestamps(input_dict, gap=0.1):
             sorted_chunks[key]["end"] = new_end
             log.debug("Updated key '%s' end from %f to %f" %(key, end, new_end))
     return sorted_chunks
-
-
-
-
 
 

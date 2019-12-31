@@ -1,5 +1,5 @@
 """
-Collect read and write here
+Collect read and write functions.
 """
 import os
 import pytest

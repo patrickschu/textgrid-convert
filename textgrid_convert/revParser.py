@@ -12,6 +12,11 @@ log.addHandler(logging.StreamHandler())
 def parse_revstamp(timestamp):
     """
     Convert timestamp from rev format (00:00:20,000) to ms
+
+    Args:
+        timestamp(str):
+    Returns:
+        int
     """
     hrs, mins, rest = timestamp.split(":")
     hrs, mins = int(hrs), int(mins) 
@@ -32,7 +37,7 @@ TESTDICT = {0: {"speaker_name": "Mary", "text": "one", "start": 0, "end": 0.5896
 
 class revParser(ParserABC):
     """
-        # transcription dict is formatted like so: {chunk_id(int): {"speaker_name": "", "text": "", "start": float, "end": float}}
+    # transcription dict is formatted like so: {chunk_id(int): {"speaker_name": "", "text": "", "start": float, "end": float}}
     """
     speakers = () # pull info rom Rev JSON here
 
@@ -80,6 +85,7 @@ class revParser(ParserABC):
     def to_darla_textgrid(self, speaker_id=None, alias="sentence"):
         """
         Change TextGrid to the format DARLA understands: only "sentence" grids
+
         Args:
             speaker_id (int):  ID of the speaker to keep, will default to first found
         Returns:
@@ -100,11 +106,8 @@ class revParser(ParserABC):
         log.debug("Transcription dict going into DARLA has {} items".format(len(darla_dict)))
         log.debug("Setting tier name to '%s'" %alias)
         for key, values in darla_dict.items():
-            print(key, values)
-            print("l;")
             output_dict[key] = values
             output_dict[key]["speaker_name"]  = alias
-        print("ouy", output_dict)
         textgrid = self.to_textgrid(output_dict, speaker_name="IO")
         return textgrid
 

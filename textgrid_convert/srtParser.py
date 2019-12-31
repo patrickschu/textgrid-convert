@@ -11,6 +11,7 @@ class srtParser(ParserABC):
     """
     Read and parse an srt formatted file
     Inofficial specs here: http://forum.doom9.org/showthread.php?p=470941#post470941
+
     Attributes:
         file_name(optional)
         srt_text(str)
@@ -18,8 +19,9 @@ class srtParser(ParserABC):
     def __init__(self, transcription):
         """
         Initializer
+
         Args:
-            str_text(str)
+            transcription(str)
         """
         self.transcription = transcription
         self.transcription_dict = {} 
@@ -29,6 +31,7 @@ class srtParser(ParserABC):
     def parse_timestamp(self, timestamp):
         """
         Convert from srt style timestamp 00:59:58,89 to ms
+
         Args:
             timestamp(str)
         Return:
@@ -43,7 +46,11 @@ class srtParser(ParserABC):
     def parse_transcription(self, srt_text=None, speaker_name="Speaker 1", time_stamp_sep=" --> "):
         """
         Pull the stuff from srt into a dictionary of format {chunk_id: {"text": "", "start": int, "end": int}}
+
         Args:
+            srt_text(str): 
+            speaker_name(str): 
+            time_stamp_sep(str): placeholder between start and end time stamp
         Returns:
             dict as described above
         """
@@ -79,6 +86,7 @@ class srtParser(ParserABC):
     def to_darla_textgrid(self, speaker_id=None, speaker_name=None, alias="sentence"):
         """
         Change TextGrid to the format DARLA understands: only "sentence" grids
+
         Args:
             speaker_id(int): NA for sbvs
             speaker_name(str): name of the speaker to extact
