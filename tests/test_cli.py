@@ -124,7 +124,26 @@ def test_darla_conversion_single(mock_writer, mock_convert ):
         mock_writer.call_count = 0
         mock_convert.call_count = 0
 
-
+@patch("textgrid_convert.ttextgrid_convert.convert_to_darla", autospec=True)
+@patch("textgrid_convert.iotools.filewriter", autospec=True)
+def test_file_output_single(mock_writer, mock_convert):
+    """
+    """
+    for ext, path in FORMAT_DICT.items():
+        infolder, outfile = str(path), str(MAIN_PATH / "test.txt")
+        infile = os.listdir(infolder)[0]
+        informat = ext 
+        args = ["--i", infile,  "--f", informat, "--t", "darla", "--out", outfile]
+        res = vars(arg_parser.parse_args(args))
+        assert res["strict"] is True
+        assert res["input_path"] == str(infile)
+        assert str(res["output_path"]) == str(outfile)
+        assert str(res["output_path"]) ==  str(MAIN_PATH / "test.txt")
+        main(**res)
+        assert mock_writer.call_count == 1
+        assert mock_convert.call_count == 1
+        mock_writer.call_count = 0
+        mock_convert.call_count = 0
 
 def test_guess_format():
     SOURCE_FORMAT_DICT = dict((("UIUIUI.txt.srt", "srt"), ("folder/below/transcript.sbv", "sbv"), ("test.json", "rev")))
