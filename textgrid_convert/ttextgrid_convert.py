@@ -38,8 +38,6 @@ def guess_source_format(input_path, extension_map=FILE_EXT_TO_FORMAT):
         log.warning("Cannot guess source format for file '%s' (options are: %s)" %(input_path, extension_map.keys()))
     return source_format
 
-
-
 def convert_to_txtgrid(input_file, source_format, speaker_name="Speaker 1"):
     """
     Convert forom `source_format` in `input_file` to TextGrid
@@ -142,6 +140,9 @@ def main(source_format, to,  input_path, output_path=HERE, suffix="_TEXTGRID.txt
     # processing FIXME: outsource this
     if os.path.isdir(input_path):
         log.debug("Processing folder '{}'".format(str(input_path)))
+        if not os.path.isdir(output_path):
+            raise IOError("Cannot write multiple output files to path '{}' (specify output folder with `-o`)".format(
+                output_path))
         if not source_format:
             source_format = folder_source_format(input_path)
             #FIXME below
@@ -177,8 +178,12 @@ def main(source_format, to,  input_path, output_path=HERE, suffix="_TEXTGRID.txt
         if not output_path:
             output_path = HERE 
         fil_name = os.path.split(input_path)[-1]
-        filename = os.path.join(output_path, fil_name + suffix)
-        log.debug("Writing to %s" %filename)
+        if os.path.isdir(output_path):
+            print("given a folder")
+            filename = os.path.join(output_path, fil_name + suffix)
+        else:
+            filename = output_path
+        log.debug("Writing to %s", filename)
         iotools.filewriter(filename, outstring=result, strict=strict)
         log.debug("Written to %s", filename)
 
