@@ -9,28 +9,6 @@ import logging
 log = logging.getLogger(__name__)
 log.setLevel(logging.DEBUG)
 
-#TESTDICT = {0: {"speaker_name": "Mary", "text": "one", "start": 0, "end": 0.5896534423132239},
-#            1: {"speaker_name": "Mary", "text": "",  "end": 1.4123177579131596,"start": 0.5896534423132239},
-#            2: {"speaker_name": "Mary", "text": "two",  "end": 2.343227378197297, "start": 1.4123177579131596},
-#            3: {"speaker_name": "Mary", "text": "three",  "end": 3.1225935719235522, "start": 2.343227378197297},
-#            4: {"speaker_name": "Mary", "start": 3.1225935719235522, "end": 12.804852607709751, "text": "rest of the text * @ " 
-#               },
-#            5: {"speaker_name": "John", "start": 0, "end": 12.804852607709751, "text": "" }}
-
-"""
-Parser takes in a string
-
-Parser can also take a file path as from_file command, but that is optional
-
-Parser uses parse_transcription to convert string to dict representation
-this can be stored in self.X or just passed around to other methods
-
-Parser uses to_textgrid to convert to Textgrdi sring 
-
-Optionally this can be written out using to_file()
-
-"""
-
 
 class ParserABC(metaclass=abc.ABCMeta):
     """
@@ -45,7 +23,7 @@ class ParserABC(metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def parse_timestamp(self, timestamp):
         """
-        Convert timestamp to datetime.tme
+        Convert timestamp to int
 
         Args:
             timestamp(str)
@@ -60,6 +38,8 @@ class ParserABC(metaclass=abc.ABCMeta):
 
         Args:
             transcription(str)
+        Returns:
+            dict
         """
 
     def to_textgrid(self, input_dict=None, output_file=None, speaker_name="Speaker1", adapt_endstamps=0.001):
@@ -97,11 +77,19 @@ class ParserABC(metaclass=abc.ABCMeta):
         textgrid = tgtools.to_long_textgrid(tier_dict=textgrid_dict)
         return textgrid
 
-    def from_file(self):
+    @classmethod
+    def from_file(cls, input_path):
         """
         Read file from disk
+
+        Args:
+            input_path(str): path to transcription file to read
+        Returns:
+            initialized class
         """
-        raise NotImplementedError("")
+        with open(input_path, "r", encoding="utf-8") as transcriptin:
+            transcript = transcriptin.read()
+        return cls(transcript, unique_id=input_path)
 
     def to_file(self):
         """

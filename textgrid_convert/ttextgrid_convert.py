@@ -22,6 +22,18 @@ FILE_EXT_TO_FORMAT = {
 }
 
 
+def get_py_version():
+    """
+    Get currently running Py version
+
+    Args:
+
+    Returns:
+        str
+    """
+    version_tuple = sys.version_info
+    return version_tuple[:3]
+
 def guess_source_format(input_path, extension_map=FILE_EXT_TO_FORMAT):
     """
     Based on file extension of `input_path`, guess the format of transcription file.
@@ -121,7 +133,7 @@ def main(source_format, to,  input_path, output_path=HERE, suffix="_TEXTGRID.txt
     Example: convert from=sbv to=TextGrid and write to output_path="home/patrick/output"
 
     Args:
-        source_format(str) : file ending, currently accepts sbv and srt
+        source_format(str) : transcription format, currently accepts sbv, srt, and rev
         to (str) : file ending, only accepts TextGrid atm
         input_path(str)
         output_path(str)
@@ -130,15 +142,20 @@ def main(source_format, to,  input_path, output_path=HERE, suffix="_TEXTGRID.txt
     """
     log.debug('strict is %s' %strict)
     log.debug('HERE is %s' %HERE)
-    input_path = pathlib.Path(input_path)
-    input_path = str(input_path)
-    if output_path:
+    major, minor, micro = get_py_version()
+    if major != 3:
+        version_str = ".".join([str(major), str(minor), str(micro)])
+        raise NotImplementedError("Textgrid-convert only works with Python 3, not '{}'".format(version_str))
+    if minor < 5:
+        input_path = str(input_path)
         output_path = str(output_path)
-    log.debug('input path %s' %input_path)
+    else:
+        input_path = pathlib.Path(input_path)
+    log.debug('input path %s, output path %s' %(input_path, output_path))
     if source_format:
         source_format = source_format.lower().strip(" .")
-        if source_format not in ["sbv", "srt", "json", "rev"]:
-            raise ValueError("Works with 'sbv' or 'srt', 'json', 'rev', given '{}'".format(source_format))
+        if source_format not in FILE_EXT_TO_FORMAT.values():
+            raise ValueError("Works with '{}'  given '{}'".format(FILE_EXT_TO_FORMAT.values(), source_format))
     if not any([source_format, input_path]):
         raise ValueError("Either input_path or source format needs to be specified, currently are {} and {}".format(
             source_format, input_path))
@@ -151,10 +168,14 @@ def main(source_format, to,  input_path, output_path=HERE, suffix="_TEXTGRID.txt
         if not source_format:
             source_format = folder_source_format(input_path)
             #FIXME below
-        infiles = [i for i in os.listdir(input_path) if os.path.splitext(i.lower())[-1] == "." + source_format]
+        file_ext = {v:k for k,v in FILE_EXT_TO_FORMAT.items()}.get(source_format)
+        if file_ext is None:
+            raise KeyError("Could not find file type associated with '{}', options are: '{}'".format(
+                source_format, FILE_EXT_TO_FORMAT.values()))
+        infiles = [i for i in os.listdir(input_path) if os.path.splitext(i.lower())[-1] == "." + file_ext]
         infiles = [os.path.join(input_path, i) for i in infiles]
         if len(infiles) < 1:
-            raise ValueError("No relevant sbv or srt files found in folder '{}', contains '{}'".format(
+            raise ValueError("No relevant files found in folder '{}', contains '{}'".format(
                 input_path, os.listdir(input_path)[:100]))
         log.debug("Processing {} {} files from folder '{}'".format(len(infiles), source_format, str(input_path)))
         for fil in infiles:

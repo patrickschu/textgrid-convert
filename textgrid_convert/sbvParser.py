@@ -17,7 +17,7 @@ class sbvParser(ParserABC):
         file_name(optional)
         sbv_text(str)
     """
-    def __init__(self, transcription):
+    def __init__(self, transcription, unique_id=None):
         """
         Initializer
 
@@ -27,6 +27,8 @@ class sbvParser(ParserABC):
         self.transcription = transcription
         self.transcription_dict = {}
         self.parse_transcription(transcription)
+        if unique_id is not None:
+            self.unique_id=unique_id
 
     def parse_timestamp(self, timestamp):
         """

@@ -16,16 +16,19 @@ class srtParser(ParserABC):
         file_name(optional)
         srt_text(str)
     """
-    def __init__(self, transcription):
+
+    def __init__(self, transcription, unique_id=None):
         """
         Initializer
 
         Args:
-            transcription(str)
+            str_text(str)
         """
         self.transcription = transcription
-        self.transcription_dict = {} 
+        self.transcription_dict = {}
         self.parse_transcription(transcription)
+        if unique_id is not None:
+            self.unique_id=unique_id
 
 
     def parse_timestamp(self, timestamp):

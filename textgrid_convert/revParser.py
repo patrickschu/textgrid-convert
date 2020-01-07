@@ -1,4 +1,3 @@
-# read revfiles as defined here: https://www.rev.com/api/attachmentsgetcontent
 from textgrid_convert.ParserABC import ParserABC
 import copy
 import json
@@ -26,61 +25,83 @@ def parse_revstamp(timestamp):
     assert isinstance(fulltime, int)
     return fulltime
 
-TESTDICT = {0: {"speaker_name": "Mary", "text": "one", "start": 0, "end": 0.5896534423132239},
-            1: {"speaker_name": "Mary", "text": "",  "end": 1.4123177579131596,"start": 0.5896534423132239},
-            2: {"speaker_name": "Mary", "text": "two",  "end": 2.343227378197297, "start": 1.4123177579131596},
-            3: {"speaker_name": "Mary", "text": "three",  "end": 3.1225935719235522, "start": 2.343227378197297},
-            4: {"speaker_name": "Mary", "start": 3.1225935719235522, "end": 12.804852607709751, "text": "rest of the text * @ " 
-               },
-            5: {"speaker_name": "John", "start": 0, "end": 12.804852607709751, "text": "" }}
-
 
 class revParser(ParserABC):
     """
-    # transcription dict is formatted like so: {chunk_id(int): {"speaker_name": "", "text": "", "start": float, "end": float}}
+    Class to parse revfiles as defined here: https://www.rev.com/api/attachmentsgetcontent
+    Attributes:
+        speakers
     """
     speakers = () # pull info rom Rev JSON here
 
-    def __init__(self, transcription):
-        # raw transcript str
+
+    def __init__(self, transcription, unique_id=None):
+        """
+        Initializer
+
+        Args:
+            transcription(str); transcription text
+            unique_id(str): optional
+        """
         self.transcription = transcription
-        # chopped up to convert to other format
-        self.transcription_dict = self.parse_transcription(transcription)
+        self.transcription_dict = {}
+        self.parse_transcription(transcription)
+        if unique_id is not None:
+            self.unique_id=unique_id
 
 
     def parse_timestamp(self, timestamp):
         """
         Convert from rev timestamps to ms
+        Args:
+            timestamp(str): timestamp
+        Returns:
+            int of milliseconds
         """
         return parse_revstamp(timestamp)
 
-    def parse_transcription(self, speaker=None):
+    def parse_rev_monologues(self, monologues, chunk_id=1):
         """
-        Specs are here: https://www.rev.com/api/attachmentsgetcontent
+        Parse clunky monologues into dict
+
+        Args:
+            monologues(iterable): list of dicts, as present in rev outout
+            chunk_id (int): starting integer for chunk IDs, defaults to 1
+        Returns:
+            dictionary to be used for self.transcription_dict
         """
-        transcription_dict = {}
-        try:
-            input_dict = json.loads(self.transcription)
-        except json.decoder.JSONDecodeError as err:
-            log.critical("Input transcription to revParser '%s' cannot be parsed as JSON" %self.unique_id) 
-            raise err
-        #FIXME make this a separate parsing step
-        self.speakers = [(i["id"], i["name"]) for i in input_dict["speakers"]]
-        monologues = input_dict["monologues"]
         chunk_id = 1
+        mono_dict = {}
+        log.debug("Found %s monologues", len(monologues))
         for mono in monologues:
             speaker_name, speaker_id = mono.get("speaker_name"), mono.get("speaker_id")
             utterances = [i for i in mono["elements"] if i["type"] == "text" and all((i.get("timestamp"), i.get("end_timestamp")))]
             log.debug("Found {} utterances".format(len(utterances)))
             for utter in utterances:
-                transcription_dict[chunk_id] = {}
-                transcription_dict[chunk_id]["speaker_name"], transcription_dict[chunk_id]["speaker"] = speaker_name, speaker_id
-                transcription_dict[chunk_id]["text"] = utter["value"]
-                transcription_dict[chunk_id]["start"] = self.parse_timestamp(utter["timestamp"])
-                transcription_dict[chunk_id]["end"] = self.parse_timestamp(utter["end_timestamp"])
+                mono_dict[chunk_id] = {}
+                mono_dict[chunk_id]["speaker_name"], mono_dict[chunk_id]["speaker"] = speaker_name, speaker_id
+                mono_dict[chunk_id]["text"] = utter["value"]
+                mono_dict[chunk_id]["start"] = self.parse_timestamp(utter["timestamp"])
+                mono_dict[chunk_id]["end"] = self.parse_timestamp(utter["end_timestamp"])
                 chunk_id += 1
-        self.transcription_dict = copy.deepcopy(transcription_dict)
-        return copy.deepcopy(transcription_dict)
+        return mono_dict
+
+    def parse_transcription(self, speaker=None):
+        """
+        Read rev transcription into dict. Specs are here: https://www.rev.com/api/attachmentsgetcontent
+        Args:
+            speaker(str, optional): 
+        """
+        try:
+            input_dict = json.loads(self.transcription)
+        except json.decoder.JSONDecodeError as err:
+            log.critical("Input transcription to revParser '%s' cannot be parsed as JSON" %self.unique_id) 
+            raise err
+        self.speakers = [(i["id"], i["name"]) for i in input_dict["speakers"]]
+        monologues = input_dict["monologues"]
+        monologue_dict = self.parse_rev_monologues(monologues)
+        self.transcription_dict=monologue_dict
+        return monologue_dict
 
     def to_darla_textgrid(self, speaker_id=None, alias="sentence"):
         """
@@ -88,6 +109,7 @@ class revParser(ParserABC):
 
         Args:
             speaker_id (int):  ID of the speaker to keep, will default to first found
+            alias (str): name of output tier, defaults to 'sentence' as required by DARLA
         Returns:
             str to be fed into DARLA
         """
