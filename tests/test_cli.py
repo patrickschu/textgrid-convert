@@ -22,7 +22,7 @@ CWD = pathlib.PurePath(__file__).parent
 
 FORMAT_DICT = {"sbv": INFILES_SBV, 
                "srt": INFILES_SRT,
-               "json": INFILES_JSON}
+               "rev": INFILES_JSON}
 
 
 @patch("textgrid_convert.ttextgrid_convert.convert_to_txtgrid", autospec=True)
@@ -77,7 +77,7 @@ def test_json_conversion(mock_writer, mock_convert ):
     assert str(res["output_path"]) == str(MAIN_PATH)
     with pytest.raises(ValueError):
         main(**res)
-    informat = "json"
+    informat = "rev"
     args = ["--i", infolder,  "--f", informat, "--t", "textgrid"]
     res = vars(arg_parser.parse_args(args))
     main(**res)

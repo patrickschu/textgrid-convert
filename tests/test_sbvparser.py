@@ -10,6 +10,15 @@ SBV_TO_GRID2 =  OUTFILES / "sbv_to_grid2.TextGrid"
 SBV_TO_GRID3 =  OUTFILES / "sbv_to_grid3.TextGrid"
 SBV_TO_GRID4 =  OUTFILES / "sbv_to_darla.TextGrid"
 
+def test_from_file():
+    """
+    """
+    parser = sbvParser.from_file(str(DOWNSUB))
+    assert parser.unique_id == str(DOWNSUB)
+    assert isinstance(parser, sbvParser)
+
+
+
 def test_textgrid_output():
     """
     """
