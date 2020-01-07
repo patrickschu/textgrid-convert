@@ -14,7 +14,6 @@ Welcome to textgrid-convert's documentation!
 
 .. automodule:: textgrid_convert
    :members:
-   :show-inheritance:
 
 
 Indices and tables
