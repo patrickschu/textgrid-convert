@@ -13,7 +13,7 @@ def adapt_timestamps(input_dict, gap=0.1):
 
     Args:
         input_dict(dict) : dictionary with timestamps, e.g. self.transcription_dict in a Parser
-        gap(float): gap to introduce between end and start index after adapt
+        gap(float, optional): gap to introduce between end and start index after adapt. Defaults to 0.1
     Returns:
         dict
     """
@@ -33,5 +33,3 @@ def adapt_timestamps(input_dict, gap=0.1):
             sorted_chunks[key]["end"] = new_end
             log.debug("Updated key '%s' end from %f to %f" %(key, end, new_end))
     return sorted_chunks
-
-

@@ -24,12 +24,12 @@ FILE_EXT_TO_FORMAT = {
 
 def get_py_version():
     """
-    Get currently running Py version
+    Get currently running Py version. Need to make pathlib adapts for Py < 3.6
 
     Args:
 
     Returns:
-        str
+        tuple (major, minor, micro)
     """
     version_tuple = sys.version_info
     return version_tuple[:3]
@@ -62,7 +62,7 @@ def convert_to_txtgrid(input_file, source_format, speaker_name="Speaker 1"):
     Returns:
         TextGrid formatted string
     """
-    with open(input_file, "r") as sourcefile:
+    with open(input_file, "r", encoding="utf-8") as sourcefile:
         sourcetext = sourcefile.read()
         log.debug("Read file '{}' with {} chars".format(input_file, len(sourcetext)))
     if source_format == "sbv":

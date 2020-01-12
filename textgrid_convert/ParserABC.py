@@ -1,5 +1,6 @@
 """
-Abstract Base class for implementing transcription parsers
+Abstract Base class ParserABC for implementing transcription parsers
+Underlies all parsers such as sbvParser, srtParser etc. 
 """
 import abc
 from textgrid_convert import textgridtools as tgtools
@@ -13,31 +14,34 @@ log.setLevel(logging.DEBUG)
 class ParserABC(metaclass=abc.ABCMeta):
     """
     Abstract base class for Parsers to feed textgrid conversion
+    Attributes:
+        unique_id (str) : unique identifier for Parser
+        transcription(str) : raw string of transcription
+        transcription_dict(dict) : parsed form of transcription, of form  {$CHUNK_ID: {"start": int, "end": int, "text": str}}
     """
     unique_id = None
     transcription = None
     transcription_dict = None
-    # transcription dict is formatted like so: {chunk_id(int): {"speaker_name": "", "text": "", "start": float, "end": float}}
 
 
     @abc.abstractmethod
     def parse_timestamp(self, timestamp):
         """
-        Convert timestamp to int
+        Convert `timestamp` to int.
 
         Args:
-            timestamp(str)
+            timestamp(str): string of timestamp, e.g. 0:0:23
         Returns:
-            timestamp in milliseconds
+            timestamp in milliseconds, e.g. 23000
         """
 
     @abc.abstractmethod
     def parse_transcription(self, transcription):
         """
-        Convert transcription input to transcription dictionary
+        Convert raw transcription input string to transcription dictionary
 
         Args:
-            transcription(str)
+            transcription(str): raw string of transcription
         Returns:
             dict
         """
@@ -45,13 +49,11 @@ class ParserABC(metaclass=abc.ABCMeta):
     def to_textgrid(self, input_dict=None, output_file=None, speaker_name="Speaker1", adapt_endstamps=0.001):
         """
         FIXME: add output_file
-        Convert internal dict to Praat Textgrid format
-        "Specs" here: http://www.fon.hum.uva.nl/praat/manual/Intro_7__Annotation.html
-        Time needs to be secs.milisecs, round to 2
+        Convert internal dict to Praat Textgrid format, as defined here: http://www.fon.hum.uva.nl/praat/manual/Intro_7__Annotation.html
 
         Args:
-            speaker_name (str)
-            adapt_endstamps(float): if given, will adapt end stamps to < start stamp
+            speaker_name (str): name of speaker, default to "Speaker 1"
+            adapt_endstamps(float): if given, will adapt end stamps to < start stamp of next chunk
         Returns:
             TextGrid compatible string
         """
