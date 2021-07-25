@@ -14,6 +14,8 @@ textgrid-convert converts audio transcripts such as sbv or srt files to
 
 Run `pip install textgrid-convert`. This requires Python 3.
 
+The CI tests run on 3.7 (MacOS) and 3.7 + 3.8 (Win, Ubuntu). However, any Python 3+ version with NumPy and Pandas installed should work. 
+
 # 2\. Use
 
 You can run run the from the command line or as a regular library from a
