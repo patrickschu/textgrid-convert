@@ -15,9 +15,10 @@ URL ="https://github.com/patrickschu/textgrid-convert/"
 EMAIL ="patrickschultz@utexas.edu"
 AUTHOR = "Patrick Schultz, Lars Hinrichs"
 REQUIRES_PYTHON = '>=3.0.0'
-VERSION = '0.4.1'
+VERSION = '0.4.2'
 
 # What packages are required for this module to be executed?
+# FIXME is this needed
 REQUIRED = [
 "astroid>=2.3.3",
 "attrs>=19.3.0",

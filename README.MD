@@ -103,3 +103,8 @@ to DARLA-compatible TextGrid and write to *output.TextGrid*, simply type
 ## Documentation
 
 To be added [here](https://textgrid-convert.readthedocs.io/en/latest/)
+
+
+## PyPi
+
+Read [here](https://towardsdatascience.com/how-to-upload-your-python-package-to-pypi-de1b363a1b3)
