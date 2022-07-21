@@ -39,8 +39,9 @@ def test_srt_conversion(mock_writer, mock_convert ):
     assert res["input_path"] == infolder 
     assert str(res["output_path"]) == str(MAIN_PATH)
     main(**res)
-    assert mock_writer.call_count == len(os.listdir(res["input_path"]))
-    assert mock_convert.call_count == len(os.listdir(res["input_path"]))
+    n_files = len([i for i in os.listdir(res["input_path"]) if not i.startswith(".")])
+    assert mock_writer.call_count == n_files
+    assert mock_convert.call_count == n_files
  
 @patch("textgrid_convert.ttextgrid_convert.convert_to_txtgrid", autospec=True)
 @patch("textgrid_convert.iotools.filewriter", autospec=True)
@@ -98,8 +99,9 @@ def test_darla_conversion(mock_writer, mock_convert ):
         assert res["input_path"] == str(path)
         assert str(res["output_path"]) == str(MAIN_PATH)
         main(**res)
-        assert mock_writer.call_count == len(os.listdir(res["input_path"]))
-        assert mock_convert.call_count == len(os.listdir(res["input_path"]))
+        n_files = len([i for i in os.listdir(res["input_path"]) if not i.startswith(".")])
+        assert mock_writer.call_count == n_files 
+        assert mock_convert.call_count ==  n_files
         mock_writer.call_count = 0
         mock_convert.call_count = 0
 
