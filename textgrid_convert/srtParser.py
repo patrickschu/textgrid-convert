@@ -6,6 +6,7 @@ import copy
 from textgrid_convert.ParserABC import ParserABC
 
 log = logging.getLogger(__name__)
+from textgrid_convert.textgridtools import merge_text_with_newlines
 
 class srtParser(ParserABC):
     """
@@ -14,7 +15,7 @@ class srtParser(ParserABC):
 
     """
 
-    def __init__(self, transcription, preprocessors=[], unique_id=None):
+    def __init__(self, transcription, preprocessors=[merge_text_with_newlines], unique_id=None):
         """
         Initializer
 

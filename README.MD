@@ -73,12 +73,12 @@ Specify input format. *FORMAT* can be:
 
   - `rev` [docs](https://www.rev.com/api/attachmentsgetcontent)
 
-`-t` *FORMAT*, `--to`*FORMAT*  
+`-t` *FORMAT*, `--to`*FORMAT* 
 Specify output format. *FORMAT* can be:
 
   - `textgrid` or `TextGrid` [docs]()
 
-  - `darla` or `DarlaTextGrid` [docs]() :::
+  - `darla` or `DarlaTextGrid` [docs]()
 
 `-o` *FILE*, `--output_path` *FILE*  
 Write output to *FILE*.
