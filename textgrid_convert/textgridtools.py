@@ -143,8 +143,6 @@ def merge_text_with_newlines(input_string):
     separator = "\n"
     text_line_pattern = re.compile(r".*[A-Za-z].*")
     split_string = input_string.split(separator)
-    print("--")
-    print(split_string)
     output_split_string = []
     aggregated_strings = []
     # since the first line will always be an index, this will not wrap around
@@ -158,5 +156,4 @@ def merge_text_with_newlines(input_string):
             aggregated_strings.append(line)
     if aggregated_strings:
         output_split_string.append(" ".join(aggregated_strings))
-    print(output_split_string)
     return separator.join(output_split_string)
