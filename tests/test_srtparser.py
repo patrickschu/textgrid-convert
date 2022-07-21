@@ -1,11 +1,13 @@
 import pathlib
 from textgrid_convert.srtParser import srtParser
-import textgrid_convert.textgridtools as tgt
+from textgrid_convert.textgridtools import merge_text_with_newlines
 from globals import INFILES_SRT, OUTFILES
 
 DOWNSUB = INFILES_SRT / "downsub.srt"
 SRT_TO_GRID = OUTFILES / "srt_to_grid.TextGrid"
 SRT_TO_DARLA = OUTFILES / "srt_to_darla.TextGrid"
+NEWLINES = INFILES_SRT / "issue_43.srt"
+FULLTEXT_NEWLINES = INFILES_SRT / "issue_43_fulltext.srt"
 
 
 def test_class_init():
@@ -27,7 +29,6 @@ def test_timeconvert():
     parser = srtParser(intext)
     converted = parser.parse_timestamp(intext)
     assert converted == 1579.00
-    print(converted)
     intext = "00:01:01,579"
     parser = srtParser(intext)
     converted = parser.parse_timestamp(intext)
@@ -67,3 +68,15 @@ def test_to_darla():
     txtgrid = parser.to_darla_textgrid()
     with open(str(SRT_TO_DARLA), "w", encoding="utf-8") as srtout:
         srtout.write(txtgrid)
+
+def test_file_with_newlines():
+    """
+   """
+    with open(str(NEWLINES), "r", encoding="utf-8") as srtin:
+        txt = srtin.read()
+    parser = srtParser(txt, preprocessors=[merge_text_with_newlines])
+    txtgrid = parser.to_darla_textgrid()
+    with open(str(FULLTEXT_NEWLINES), "r", encoding="utf-8") as srtin:
+        txt = srtin.read()
+    parser = srtParser(txt, preprocessors=[merge_text_with_newlines])
+    txtgrid = parser.to_darla_textgrid()
