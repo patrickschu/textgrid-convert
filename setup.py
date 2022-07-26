@@ -15,37 +15,37 @@ URL ="https://github.com/patrickschu/textgrid-convert/"
 EMAIL ="patrickschultz@utexas.edu"
 AUTHOR = "Patrick Schultz, Lars Hinrichs"
 REQUIRES_PYTHON = '>=3.0.0'
-VERSION = '0.4.2'
+VERSION = '0.4.3a'
 
 # What packages are required for this module to be executed?
 # FIXME is this needed
-REQUIRED = [
-"astroid>=2.3.3",
-"attrs>=19.3.0",
-"et-xmlfile>=1.0.1",
-"importlib-metadata>=1.1.0",
-"isort>=4.3.21",
-"jdcal>=1.4.1",
-"lazy-object-proxy>=1.4.3",
-"mccabe>=0.6.1",
-"more-itertools>=8.0.0",
-"numpy>=1.16.4",
-"openpyxl>=2.6.2",
-"packaging>=19.2",
-"pandas>=0.24.2",
-"pluggy>=0.13.1",
-"py>=1.8.0",
-"pylint>=2.4.4",
-"pyparsing>=2.4.5",
-"pytest>=5.3.1",
-"python-dateutil>=2.8.0",
-"pytz>=2019.1",
-"six>=1.12.0",
-"typed-ast>=1.4.0",
-"virtualenv>=16.7.2",
-"wcwidth>=0.1.7",
-"wrapt>=1.11.2",
-"XlsxWriter>=1.1.8",
+REQUIRED = [ 
+ "astroid>=2.3.3",
+ "attrs>=19.3.0",
+ "et-xmlfile>=1.0.1",
+ "importlib-metadata>=1.1.0",
+ "isort>=4.3.21",
+ "jdcal>=1.4.1",
+ "lazy-object-proxy>=1.4.3",
+ "mccabe>=0.6.1",
+ "more-itertools>=8.0.0",
+ "numpy>=1.16.4",
+ "openpyxl>=2.6.2",
+ "packaging>=19.2",
+ "pandas>=0.24.2",
+ "pluggy>=0.13.1",
+ "py>=1.8.0",
+ "pylint>=2.4.4",
+ "pyparsing>=2.4.5",
+ "pytest>=5.3.1",
+ "python-dateutil>=2.8.0",
+ "pytz>=2019.1",
+ "six>=1.12.0",
+ "typed-ast>=1.4.0",
+ "virtualenv>=16.7.2",
+ "wcwidth>=0.1.7",
+ "wrapt>=1.11.2",
+ "XlsxWriter>=1.1.8",
 
 ]
 
@@ -63,11 +63,13 @@ here = os.path.abspath(os.path.dirname(__file__))
 
 # Import the README and use it as the long-description.
 # Note: this will only work if 'README.md' is present in your MANIFEST.in file!
-try:
-    with io.open(os.path.join(here, 'README.md'), encoding='utf-8') as f:
-        long_description = '\n' + f.read()
-except FileNotFoundError:
-    long_description = DESCRIPTION
+#try:
+#    with io.open(os.path.join(here, 'README.md'), encoding='utf-8') as f:
+#        long_description = '\n' + f.read()
+#except FileNotFoundError:
+#    long_description = DESCRIPTION
+
+long_description = DESCRIPTION
 
 # Load the package's __version__.py module as a dictionary.
 about = {}

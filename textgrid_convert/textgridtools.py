@@ -1,6 +1,7 @@
 """
 Collect TextGrid related functionality here
 """
+import re
 import logging
 log = logging.getLogger(__name__)
 
@@ -130,3 +131,29 @@ def to_long_textgrid(tier_dict, tier_key="speaker_name", tier_class="IntervalTie
             tier_intervals.append(interval_str)
         tiers = tiers + [tier_intro + "\n".join(tier_intervals)]
     return "\n".join([file_str, "\n".join(tiers)]) 
+
+def merge_text_with_newlines(input_string):
+    """
+    Remove all empty lines from `input_string` as these can break the parser
+    Args:
+        input_string (str):
+    Returns:
+        input_string with empty lines dropped
+    """
+    separator = "\n"
+    text_line_pattern = re.compile(r".*[A-Za-z].*")
+    split_string = input_string.split(separator)
+    output_split_string = []
+    aggregated_strings = []
+    # since the first line will always be an index, this will not wrap around
+    for ind, line in enumerate(split_string):
+        if not text_line_pattern.match(line):
+            if aggregated_strings:
+                output_split_string.append(" ".join(aggregated_strings))
+                aggregated_strings = []
+            output_split_string.append(line)
+        else:
+            aggregated_strings.append(line)
+    if aggregated_strings:
+        output_split_string.append(" ".join(aggregated_strings))
+    return separator.join(output_split_string)

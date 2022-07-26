@@ -6,27 +6,30 @@ import copy
 from textgrid_convert.ParserABC import ParserABC
 
 log = logging.getLogger(__name__)
+from textgrid_convert.textgridtools import merge_text_with_newlines
 
 class srtParser(ParserABC):
     """
     Read and parse an srt formatted file
     Inofficial specs here: http://forum.doom9.org/showthread.php?p=470941#post470941
 
-    Attributes:
-        file_name(optional)
-        srt_text(str)
     """
 
-    def __init__(self, transcription, unique_id=None):
+    def __init__(self, transcription, preprocessors=[merge_text_with_newlines], unique_id=None):
         """
         Initializer
 
         Args:
             str_text(str)
         """
-        self.transcription = transcription
+        self.preprocessors = preprocessors
+        if self.preprocessors:
+            for prep in self.preprocessors:
+                self.transcription = prep(transcription)
+        else:
+            self.transcription = transcription
         self.transcription_dict = {}
-        self.parse_transcription(transcription)
+        self.parse_transcription(self.transcription)
         if unique_id is not None:
             self.unique_id=unique_id
 
@@ -59,7 +62,7 @@ class srtParser(ParserABC):
         """
         if not srt_text:
             srt_text = self.transcription
-        for chunk_id, timestamps, text in self.srt_generator(srt_text.splitlines(), separator=""):
+        for chunk_id, timestamps, text in self.srt_generator(srt_text.splitlines()):
             start, end = timestamps.split(time_stamp_sep)
             self.transcription_dict[chunk_id] = {
                     "speaker_name": speaker_name,
@@ -68,11 +71,10 @@ class srtParser(ParserABC):
                     "text": text}
         return copy.deepcopy(self.transcription_dict)
 
-    def srt_generator(self, filein, separator="\n"):
+    def srt_generator(self, filein):
         """
         Args:
             filein(file read object or other iterable)
-            separator(str): separator between records
         Returns:
             generator over chunk_id, timestamp, text
         """
@@ -112,6 +114,6 @@ class srtParser(ParserABC):
         log.debug("Setting tier name to '%s'" %alias)
         for key, values in darla_dict.items():
             output_dict[key] = values
-            output_dict[key]["speaker_name"]  = alias
+            output_dict[key]["speaker_name"] = alias
         textgrid = self.to_textgrid(output_dict)
         return textgrid
