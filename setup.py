@@ -15,7 +15,7 @@ URL ="https://github.com/patrickschu/textgrid-convert/"
 EMAIL ="patrickschultz@utexas.edu"
 AUTHOR = "Patrick Schultz, Lars Hinrichs"
 REQUIRES_PYTHON = '>=3.0.0'
-VERSION = '0.4.3a'
+VERSION = '0.4.3'
 
 # What packages are required for this module to be executed?
 # FIXME is this needed
