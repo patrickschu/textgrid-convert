@@ -9,13 +9,13 @@ from shutil import rmtree
 from setuptools import find_packages, setup, Command
 
 # Package meta-data.
-NAME = "textgrid-convert"
+NAME = "textgrid_convert"
 DESCRIPTION = "textgrid-convert converts audio transcripts such as sbv or srt files to Praat and DARLA compatible TextGrids."
 URL ="https://github.com/patrickschu/textgrid-convert/"
 EMAIL ="patrickschultz@utexas.edu"
 AUTHOR = "Patrick Schultz, Lars Hinrichs"
 REQUIRES_PYTHON = '>=3.0.0'
-VERSION = '0.5.0'
+VERSION = '1.0.0'
 
 # What packages are required for this module to be executed?
 # FIXME is this needed
