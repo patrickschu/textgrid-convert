@@ -203,7 +203,6 @@ def main(source_format, to,  input_path, output_path=HERE, suffix="_TEXTGRID.txt
             output_path = HERE 
         fil_name = os.path.split(input_path)[-1]
         if os.path.isdir(output_path):
-            print("given a folder")
             filename = os.path.join(output_path, fil_name + suffix)
         else:
             filename = output_path
