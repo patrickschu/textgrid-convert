@@ -107,4 +107,5 @@ To be added [here](https://textgrid-convert.readthedocs.io/en/latest/)
 
 ## PyPi
 
-Read [here](https://towardsdatascience.com/how-to-upload-your-python-package-to-pypi-de1b363a1b3)
+python setup.py bdist_wheel
+twine upload dist/*

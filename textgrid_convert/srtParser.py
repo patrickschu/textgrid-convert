@@ -7,7 +7,6 @@ from textgrid_convert.ParserABC import ParserABC
 
 log = logging.getLogger(__name__)
 log.addHandler(logging.StreamHandler())
-log.setLevel(logging.DEBUG)
 
 from textgrid_convert.textgridtools import merge_text_with_newlines
 
