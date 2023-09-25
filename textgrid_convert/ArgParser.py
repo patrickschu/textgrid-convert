@@ -16,7 +16,6 @@ HERE = pathlib.Path(os.getcwd())
 ACCEPTED_INPUT_FORMATS = ["rev", "sbv", "srt", "json"]
 ACCEPTED_INPUT_FORMATS = ACCEPTED_INPUT_FORMATS + [i.upper() for i in ACCEPTED_INPUT_FORMATS]
 ACCEPTED_INPUT_FORMATS = ACCEPTED_INPUT_FORMATS + [i + "." for i in ACCEPTED_INPUT_FORMATS]
-log.debug("Accepted input formats are %s" %ACCEPTED_INPUT_FORMATS)
 
 """
 Flags:

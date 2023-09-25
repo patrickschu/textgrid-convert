@@ -6,6 +6,8 @@ import copy
 from textgrid_convert.ParserABC import ParserABC
 
 log = logging.getLogger(__name__)
+log.addHandler(logging.StreamHandler())
+
 from textgrid_convert.textgridtools import merge_text_with_newlines
 
 class srtParser(ParserABC):
@@ -24,8 +26,10 @@ class srtParser(ParserABC):
         """
         self.preprocessors = preprocessors
         if self.preprocessors:
+            log.debug("Transcription: %s", transcription)
             for prep in self.preprocessors:
                 self.transcription = prep(transcription)
+                log.debug("Transcription after prepocessing: %s", transcription)
         else:
             self.transcription = transcription
         self.transcription_dict = {}
@@ -62,7 +66,9 @@ class srtParser(ParserABC):
         """
         if not srt_text:
             srt_text = self.transcription
-        for chunk_id, timestamps, text in self.srt_generator(srt_text.splitlines()):
+        for chunk_id, timestamps, text in self.srt_generator(srt_text.splitlines(keepends=False)):
+            log.debug("Chunk ID %s", chunk_id)
+            log.debug("Timestamps %s", timestamps)
             start, end = timestamps.split(time_stamp_sep)
             self.transcription_dict[chunk_id] = {
                     "speaker_name": speaker_name,
@@ -81,10 +87,13 @@ class srtParser(ParserABC):
         count = 0
         output = ()
         for line in filein:
+            if not line:
+                continue
+            log.debug("line: %s", line)
             count +=1
             output = output + (line, )
-            if count % 4 == 0:
-                yield output[:-1]
+            if count % 3 == 0:
+                yield output
                 output = ()
         log.debug("srt generator processed {} lines from {}".format(count, filein))
 

@@ -140,8 +140,6 @@ def main(source_format, to,  input_path, output_path=HERE, suffix="_TEXTGRID.txt
         suffix(str): string to append to file name for writing out TextGrid
         strict(Bool): if True, will not overwrite files
     """
-    log.debug('strict is %s' %strict)
-    log.debug('HERE is %s' %HERE)
     major, minor, micro = get_py_version()
     if major != 3:
         version_str = ".".join([str(major), str(minor), str(micro)])
@@ -205,7 +203,6 @@ def main(source_format, to,  input_path, output_path=HERE, suffix="_TEXTGRID.txt
             output_path = HERE 
         fil_name = os.path.split(input_path)[-1]
         if os.path.isdir(output_path):
-            print("given a folder")
             filename = os.path.join(output_path, fil_name + suffix)
         else:
             filename = output_path

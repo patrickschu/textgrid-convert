@@ -8,6 +8,7 @@ SRT_TO_GRID = OUTFILES / "srt_to_grid.TextGrid"
 SRT_TO_DARLA = OUTFILES / "srt_to_darla.TextGrid"
 NEWLINES = INFILES_SRT / "issue_43.srt"
 FULLTEXT_NEWLINES = INFILES_SRT / "issue_43_fulltext.srt"
+MISSING_INTERVALS = INFILES_SRT / "issue_44.srt"
 
 
 def test_class_init():
@@ -71,12 +72,36 @@ def test_to_darla():
 
 def test_file_with_newlines():
     """
-   """
+    """
     with open(str(NEWLINES), "r", encoding="utf-8") as srtin:
         txt = srtin.read()
     parser = srtParser(txt, preprocessors=[merge_text_with_newlines])
     txtgrid = parser.to_darla_textgrid()
+    parser = srtParser(txt)
+    txtgrid = parser.to_darla_textgrid()
+    assert len(parser.transcription_dict) == 3
     with open(str(FULLTEXT_NEWLINES), "r", encoding="utf-8") as srtin:
         txt = srtin.read()
     parser = srtParser(txt, preprocessors=[merge_text_with_newlines])
     txtgrid = parser.to_darla_textgrid()
+    parser = srtParser(txt)
+    txtgrid = parser.to_darla_textgrid()
+    assert len(parser.transcription_dict) == 817
+
+
+
+def test_file_with_missing_intervals():
+    """
+    """
+    with open(MISSING_INTERVALS, "r", encoding="utf-8") as srtin:
+        txt = srtin.read()
+        parser = srtParser(txt, preprocessors=[merge_text_with_newlines])
+        txtgrid = parser.to_darla_textgrid()
+        assert len(parser.transcription_dict) == 2, "should return 2 actual intervals"
+        assert parser.transcription_dict["1"]["start"] == 0
+        assert parser.transcription_dict["1"]["end"] == 60.473
+        assert parser.transcription_dict["2"]["start"] == 120.013
+        assert parser.transcription_dict["2"]["end"] == 235.873
+        gap_time = parser.transcription_dict["2"]["start"] - parser.transcription_dict["1"]["end"]
+        assert round(gap_time, 2) == 59.54
+
