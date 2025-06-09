@@ -1,0 +1,47 @@
+[project]
+name = "textgrid-convert"
+version = "0.4.2"  
+description = "textgrid-convert converts audio transcripts such as sbv or srt files to Praat and DARLA compatible TextGrids"
+readme = "README.md"
+requires-python = ">=3.7"
+license = {text = "MIT"}  
+authors = [
+    {name = "Patrick Schultz", email = "patrickschultz@utexas.edu"},
+]
+keywords = ["praat", "textgrid", "darla", "transcript", "conversion"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+
+dependencies = [
+    "numpy",
+    "pandas",
+]
+
+[project.urls]
+Homepage = "https://github.com/patrickschu/textgrid-convert"
+Repository = "https://github.com/patrickschu/textgrid-convert"
+Documentation = "https://textgrid-convert.readthedocs.io/en/latest/"
+
+[project.scripts]
+textgrid-convert = "textgrid_convert.__main__:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.uv]
+dev-dependencies = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "twine>=4.0",
+    "build>=0.10",
+]
