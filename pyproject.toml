@@ -1,12 +1,13 @@
 [project]
 name = "textgrid-convert"
-version = "0.4.2"  
+version = "1.1.0"  
 description = "textgrid-convert converts audio transcripts such as sbv or srt files to Praat and DARLA compatible TextGrids"
 readme = "README.md"
 requires-python = ">=3.7"
 license = {text = "MIT"}  
 authors = [
     {name = "Patrick Schultz", email = "patrickschultz@utexas.edu"},
+    {name = "Lars Hinrichs", email = "lh@utexas.edu"},
 ]
 keywords = ["praat", "textgrid", "darla", "transcript", "conversion"]
 classifiers = [
