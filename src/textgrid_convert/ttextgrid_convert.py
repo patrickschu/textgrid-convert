@@ -2,11 +2,11 @@
 import os
 import pathlib
 import sys
-from textgrid_convert import iotools
-from textgrid_convert.ArgParser import  arg_parser
-from textgrid_convert.sbvParser import sbvParser
-from textgrid_convert.srtParser import srtParser
-from textgrid_convert.revParser import revParser
+from . import iotools
+from .ArgParser import  arg_parser
+from .sbvParser import sbvParser
+from .srtParser import srtParser
+from .revParser import revParser
 import logging
 
 log = logging.getLogger(__name__)

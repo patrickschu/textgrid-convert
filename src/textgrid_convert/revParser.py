@@ -1,4 +1,4 @@
-from textgrid_convert.ParserABC import ParserABC
+from .ParserABC import ParserABC
 import copy
 import json
 import logging

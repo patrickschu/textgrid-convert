@@ -105,7 +105,29 @@ to DARLA-compatible TextGrid and write to *output.TextGrid*, simply type
 To be added [here](https://textgrid-convert.readthedocs.io/en/latest/)
 
 
-## PyPi
 
-python setup.py bdist_wheel
-twine upload dist/*
+## Development
+
+This project uses [uv](https://github.com/astral-sh/uv) for dependency management.
+
+### Setup
+```bash
+# Clone the repository
+git clone https://github.com/patrickschu/textgrid-convert.git
+cd textgrid-convert
+
+# Install uv (if not already installed)
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# Install dependencies
+uv sync --dev
+
+# Activate virtual environment
+source .venv/bin/activate
+
+# Build
+uv build -o ./dist
+
+# Push to Pypi
+uv run twine upload dist/* --verbose
+```

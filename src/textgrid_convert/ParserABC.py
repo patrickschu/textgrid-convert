@@ -3,8 +3,8 @@ Abstract Base class ParserABC for implementing transcription parsers
 Underlies all parsers such as sbvParser, srtParser etc. 
 """
 import abc
-from textgrid_convert import textgridtools as tgtools
-from textgrid_convert import preproctools as pptools
+from . import textgridtools as tgtools
+from . import preproctools as pptools
 import logging
 
 log = logging.getLogger(__name__)

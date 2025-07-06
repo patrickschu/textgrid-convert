@@ -3,7 +3,7 @@
 # expected out: 26 	 Carrie: 	 [78.28] 	 (pause 5.83) 	 [84.10]
 import logging
 import copy
-from textgrid_convert.ParserABC import ParserABC
+from .ParserABC import ParserABC
 
 log = logging.getLogger(__name__)
 log.addHandler(logging.StreamHandler())
