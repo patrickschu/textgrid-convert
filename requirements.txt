@@ -7,6 +7,6 @@ pytest==7.1.2
 pytz>=2019.1
 six==1.12.0
 wheel==0.38.1
-virtualenv==16.7.2
+virtualenv==20.26.6
 XlsxWriter==1.1.8
 textgrid-convert
